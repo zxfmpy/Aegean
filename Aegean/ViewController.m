@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "AGNPhotosPickerController.h"
 
 @interface ViewController ()
 
@@ -19,9 +20,18 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self showPhotosPicker:nil];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)showPhotosPicker:(id)sender {
+    AGNPhotosPickerController *photosPicker = [[AGNPhotosPickerController alloc] init];
+    [self presentViewController:photosPicker animated:YES completion:NULL];
+}
 @end

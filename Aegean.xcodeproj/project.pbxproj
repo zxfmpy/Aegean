@@ -7,15 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		063595361C40B7B80094C7C5 /* AGNAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 063595351C40B7B80094C7C5 /* AGNAlbumsViewController.m */; };
+		063595391C40BF2C0094C7C5 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 063595381C40BF2C0094C7C5 /* AssetsLibrary.framework */; };
+		0635953F1C40D8C60094C7C5 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 0635953C1C40D8C50094C7C5 /* UIAlertView+Blocks.m */; };
+		063595401C40D8C60094C7C5 /* UIViewController+SLAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 0635953E1C40D8C50094C7C5 /* UIViewController+SLAlert.m */; };
+		063595431C40E9340094C7C5 /* AGNAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 063595421C40E9340094C7C5 /* AGNAlbum.m */; };
+		0635954A1C40FB120094C7C5 /* AGNAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 063595481C40FB120094C7C5 /* AGNAlbumCell.m */; };
+		0635954B1C40FB120094C7C5 /* AGNAlbumCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 063595491C40FB120094C7C5 /* AGNAlbumCell.xib */; };
 		06E683281C3DED6500EF0C94 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E683271C3DED6500EF0C94 /* main.m */; };
 		06E6832B1C3DED6500EF0C94 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E6832A1C3DED6500EF0C94 /* AppDelegate.m */; };
 		06E6832E1C3DED6600EF0C94 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E6832D1C3DED6500EF0C94 /* ViewController.m */; };
 		06E683311C3DED6600EF0C94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06E6832F1C3DED6600EF0C94 /* Main.storyboard */; };
 		06E683331C3DED6600EF0C94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06E683321C3DED6600EF0C94 /* Assets.xcassets */; };
 		06E683361C3DED6600EF0C94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06E683341C3DED6600EF0C94 /* LaunchScreen.storyboard */; };
+		06E6834D1C3DF47A00EF0C94 /* AGNPhotosPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		063595341C40B7B80094C7C5 /* AGNAlbumsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNAlbumsViewController.h; sourceTree = "<group>"; };
+		063595351C40B7B80094C7C5 /* AGNAlbumsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNAlbumsViewController.m; sourceTree = "<group>"; };
+		063595371C40BA210094C7C5 /* Marcos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Marcos.h; sourceTree = "<group>"; };
+		063595381C40BF2C0094C7C5 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		0635953B1C40D8C50094C7C5 /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
+		0635953C1C40D8C50094C7C5 /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
+		0635953D1C40D8C50094C7C5 /* UIViewController+SLAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SLAlert.h"; sourceTree = "<group>"; };
+		0635953E1C40D8C50094C7C5 /* UIViewController+SLAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SLAlert.m"; sourceTree = "<group>"; };
+		063595411C40E9340094C7C5 /* AGNAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNAlbum.h; sourceTree = "<group>"; };
+		063595421C40E9340094C7C5 /* AGNAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNAlbum.m; sourceTree = "<group>"; };
+		063595471C40FB120094C7C5 /* AGNAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNAlbumCell.h; sourceTree = "<group>"; };
+		063595481C40FB120094C7C5 /* AGNAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNAlbumCell.m; sourceTree = "<group>"; };
+		063595491C40FB120094C7C5 /* AGNAlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGNAlbumCell.xib; sourceTree = "<group>"; };
 		06E683231C3DED6500EF0C94 /* Aegean.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aegean.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06E683271C3DED6500EF0C94 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		06E683291C3DED6500EF0C94 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -26,6 +47,8 @@
 		06E683321C3DED6600EF0C94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		06E683351C3DED6600EF0C94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		06E683371C3DED6600EF0C94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		06E6834B1C3DF47A00EF0C94 /* AGNPhotosPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPhotosPickerController.h; sourceTree = "<group>"; };
+		06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPhotosPickerController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,15 +56,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				063595391C40BF2C0094C7C5 /* AssetsLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0635953A1C40C5210094C7C5 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				063595371C40BA210094C7C5 /* Marcos.h */,
+				0635953B1C40D8C50094C7C5 /* UIAlertView+Blocks.h */,
+				0635953C1C40D8C50094C7C5 /* UIAlertView+Blocks.m */,
+				0635953D1C40D8C50094C7C5 /* UIViewController+SLAlert.h */,
+				0635953E1C40D8C50094C7C5 /* UIViewController+SLAlert.m */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		06E6831A1C3DED6500EF0C94 = {
 			isa = PBXGroup;
 			children = (
+				063595381C40BF2C0094C7C5 /* AssetsLibrary.framework */,
 				06E683251C3DED6500EF0C94 /* Aegean */,
 				06E683241C3DED6500EF0C94 /* Products */,
 			);
@@ -63,6 +100,7 @@
 				06E6832C1C3DED6500EF0C94 /* ViewController.h */,
 				06E6832D1C3DED6500EF0C94 /* ViewController.m */,
 				06E6832F1C3DED6600EF0C94 /* Main.storyboard */,
+				06E6834A1C3DF43600EF0C94 /* Source */,
 				06E683321C3DED6600EF0C94 /* Assets.xcassets */,
 				06E683341C3DED6600EF0C94 /* LaunchScreen.storyboard */,
 				06E683371C3DED6600EF0C94 /* Info.plist */,
@@ -77,6 +115,23 @@
 				06E683271C3DED6500EF0C94 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		06E6834A1C3DF43600EF0C94 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				063595411C40E9340094C7C5 /* AGNAlbum.h */,
+				063595421C40E9340094C7C5 /* AGNAlbum.m */,
+				06E6834B1C3DF47A00EF0C94 /* AGNPhotosPickerController.h */,
+				06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */,
+				063595341C40B7B80094C7C5 /* AGNAlbumsViewController.h */,
+				063595351C40B7B80094C7C5 /* AGNAlbumsViewController.m */,
+				063595471C40FB120094C7C5 /* AGNAlbumCell.h */,
+				063595481C40FB120094C7C5 /* AGNAlbumCell.m */,
+				063595491C40FB120094C7C5 /* AGNAlbumCell.xib */,
+				0635953A1C40C5210094C7C5 /* Helper */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +191,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0635954B1C40FB120094C7C5 /* AGNAlbumCell.xib in Resources */,
 				06E683361C3DED6600EF0C94 /* LaunchScreen.storyboard in Resources */,
 				06E683331C3DED6600EF0C94 /* Assets.xcassets in Resources */,
 				06E683311C3DED6600EF0C94 /* Main.storyboard in Resources */,
@@ -149,9 +205,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0635954A1C40FB120094C7C5 /* AGNAlbumCell.m in Sources */,
+				063595401C40D8C60094C7C5 /* UIViewController+SLAlert.m in Sources */,
+				063595361C40B7B80094C7C5 /* AGNAlbumsViewController.m in Sources */,
 				06E6832E1C3DED6600EF0C94 /* ViewController.m in Sources */,
 				06E6832B1C3DED6500EF0C94 /* AppDelegate.m in Sources */,
+				063595431C40E9340094C7C5 /* AGNAlbum.m in Sources */,
+				0635953F1C40D8C60094C7C5 /* UIAlertView+Blocks.m in Sources */,
 				06E683281C3DED6500EF0C94 /* main.m in Sources */,
+				06E6834D1C3DF47A00EF0C94 /* AGNPhotosPickerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,7 +325,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				INFOPLIST_FILE = Aegean/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.soulbeats.soul.Aegean;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -274,7 +338,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				INFOPLIST_FILE = Aegean/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.soulbeats.soul.Aegean;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -300,6 +366,7 @@
 				06E6833C1C3DED6600EF0C94 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
