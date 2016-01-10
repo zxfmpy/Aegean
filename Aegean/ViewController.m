@@ -31,7 +31,7 @@
 
 - (IBAction)showPhotosPicker:(id)sender {
     AGNPhotosPickerController *photosPicker = [[AGNPhotosPickerController alloc] init];
-    photosPicker.delegate = self;
+    photosPicker.pickerDelegate = self;
     [self presentViewController:photosPicker animated:YES completion:NULL];
 }
 

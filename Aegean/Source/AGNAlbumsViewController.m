@@ -142,8 +142,8 @@ static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
 #pragma mark - Action
 - (void)cancel:(UIBarButtonItem *)sender {
     AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
-    if ([picker.delegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
-        [picker.delegate photosPickerControllerDidCancel:picker];
+    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
+        [picker.pickerDelegate photosPickerControllerDidCancel:picker];
     } else {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     }

@@ -110,8 +110,8 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 #pragma mark <Action>
 - (void)cancel:(UIBarButtonItem *)sender {
     AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
-    if ([picker.delegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
-        [picker.delegate photosPickerControllerDidCancel:picker];
+    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
+        [picker.pickerDelegate photosPickerControllerDidCancel:picker];
     } else {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     }
@@ -123,7 +123,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 - (void)done:(UIBarButtonItem *)sender {
     AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
-    if ([picker.delegate respondsToSelector:@selector(photosPickerController:didFinishPickingPhotos:)]) {
+    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerController:didFinishPickingPhotos:)]) {
         NSMutableArray *photos = [NSMutableArray array];
         for (NSNumber *indexNumber in self.selectedPhotosIndexes) {
             NSUInteger index = [indexNumber unsignedIntegerValue];
@@ -132,7 +132,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
             UIImage *image = [[UIImage alloc] initWithCGImage:representation.fullResolutionImage scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
             [photos addObject:image];
         }
-        [picker.delegate photosPickerController:picker didFinishPickingPhotos:[photos copy]];
+        [picker.pickerDelegate photosPickerController:picker didFinishPickingPhotos:[photos copy]];
     } else {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     }

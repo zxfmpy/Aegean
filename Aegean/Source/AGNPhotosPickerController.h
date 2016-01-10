@@ -15,5 +15,5 @@
 @end
 
 @interface AGNPhotosPickerController : UINavigationController
-@property (nonatomic, weak) id<AGNPhotosPickerControllerDelegate> delegate;
+@property (nonatomic, weak) id<AGNPhotosPickerControllerDelegate> pickerDelegate;
 @end
