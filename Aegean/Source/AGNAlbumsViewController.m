@@ -8,26 +8,27 @@
 
 #import "AGNAlbumsViewController.h"
 #import "UIViewController+SLAlert.h"
+#import "AGNPhotosViewController.h"
 #import "AGNAlbumCell.h"
-
-static const NSUInteger ALAssetsGroupScreenshots = (1 << 6);
 
 @interface AGNAlbumsViewController ()
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong) NSMutableArray *albums;
 @end
 
-static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
 @implementation AGNAlbumsViewController
+
+static const NSUInteger ALAssetsGroupScreenshots = (1 << 6);
+static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Photos";
+    self.title = @"Albums";
     self.albums = [NSMutableArray array];
     self.assetsLibrary = [[ALAssetsLibrary alloc] init];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: Font(15)} forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.rowHeight = 90;
     self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
@@ -115,7 +116,7 @@ static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
     [self.assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:enumerationBlock failureBlock:failureBlock];
 }
 
-#pragma mark - UITableViewDataSource
+#pragma mark <UITableViewDataSource>
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -128,6 +129,13 @@ static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
     AGNAlbumCell *cell = [tableView dequeueReusableCellWithIdentifier:kAlbumCellReuseIdentifier forIndexPath:indexPath];
     [cell setAlbum:[self.albums objectAtIndex:indexPath.row]];
     return cell;
+}
+
+#pragma mark <UITableViewDelegate>
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    AGNPhotosViewController *photosVC = [[AGNPhotosViewController alloc] initWithCollectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+    photosVC.album = [self.albums objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:photosVC animated:YES];
 }
 
 #pragma mark - Action

@@ -8,6 +8,7 @@
 
 #import "AGNPhotosPickerController.h"
 #import "AGNAlbumsViewController.h"
+#import "Marcos.h"
 
 @implementation AGNPhotosPickerController
 
@@ -25,7 +26,7 @@
     [super viewDidLoad];
     
     // Appearance
-    self.navigationBar.barTintColor = HEXCOLOR(0x38373C);
+    self.navigationBar.barTintColor = HEXCOLOR(0x343339);
     self.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
     self.navigationBar.barStyle = UIBarStyleBlackTranslucent;

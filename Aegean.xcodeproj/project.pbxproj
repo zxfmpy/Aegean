@@ -14,6 +14,11 @@
 		063595431C40E9340094C7C5 /* AGNAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 063595421C40E9340094C7C5 /* AGNAlbum.m */; };
 		0635954A1C40FB120094C7C5 /* AGNAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 063595481C40FB120094C7C5 /* AGNAlbumCell.m */; };
 		0635954B1C40FB120094C7C5 /* AGNAlbumCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 063595491C40FB120094C7C5 /* AGNAlbumCell.xib */; };
+		0637802B1C41FE570027EA7C /* AGNPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0637802A1C41FE570027EA7C /* AGNPhotosViewController.m */; };
+		0637802F1C4203CB0027EA7C /* AGNPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0637802D1C4203CB0027EA7C /* AGNPhotoCell.m */; };
+		063780301C4203CB0027EA7C /* AGNPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0637802E1C4203CB0027EA7C /* AGNPhotoCell.xib */; };
+		063780331C4204610027EA7C /* Selection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 063780311C4204610027EA7C /* Selection@2x.png */; };
+		063780341C4204610027EA7C /* ToSelection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 063780321C4204610027EA7C /* ToSelection@2x.png */; };
 		06E683281C3DED6500EF0C94 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E683271C3DED6500EF0C94 /* main.m */; };
 		06E6832B1C3DED6500EF0C94 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E6832A1C3DED6500EF0C94 /* AppDelegate.m */; };
 		06E6832E1C3DED6600EF0C94 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E6832D1C3DED6500EF0C94 /* ViewController.m */; };
@@ -21,6 +26,7 @@
 		06E683331C3DED6600EF0C94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06E683321C3DED6600EF0C94 /* Assets.xcassets */; };
 		06E683361C3DED6600EF0C94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06E683341C3DED6600EF0C94 /* LaunchScreen.storyboard */; };
 		06E6834D1C3DF47A00EF0C94 /* AGNPhotosPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */; };
+		06ED3DED1C4246FC002B4849 /* UIView+SLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 06ED3DEC1C4246FC002B4849 /* UIView+SLAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +43,13 @@
 		063595471C40FB120094C7C5 /* AGNAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNAlbumCell.h; sourceTree = "<group>"; };
 		063595481C40FB120094C7C5 /* AGNAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNAlbumCell.m; sourceTree = "<group>"; };
 		063595491C40FB120094C7C5 /* AGNAlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGNAlbumCell.xib; sourceTree = "<group>"; };
+		063780291C41FE570027EA7C /* AGNPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPhotosViewController.h; sourceTree = "<group>"; };
+		0637802A1C41FE570027EA7C /* AGNPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPhotosViewController.m; sourceTree = "<group>"; };
+		0637802C1C4203CB0027EA7C /* AGNPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPhotoCell.h; sourceTree = "<group>"; };
+		0637802D1C4203CB0027EA7C /* AGNPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPhotoCell.m; sourceTree = "<group>"; };
+		0637802E1C4203CB0027EA7C /* AGNPhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGNPhotoCell.xib; sourceTree = "<group>"; };
+		063780311C4204610027EA7C /* Selection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Selection@2x.png"; sourceTree = "<group>"; };
+		063780321C4204610027EA7C /* ToSelection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ToSelection@2x.png"; sourceTree = "<group>"; };
 		06E683231C3DED6500EF0C94 /* Aegean.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aegean.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06E683271C3DED6500EF0C94 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		06E683291C3DED6500EF0C94 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -49,6 +62,8 @@
 		06E683371C3DED6600EF0C94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06E6834B1C3DF47A00EF0C94 /* AGNPhotosPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPhotosPickerController.h; sourceTree = "<group>"; };
 		06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPhotosPickerController.m; sourceTree = "<group>"; };
+		06ED3DEB1C4246FC002B4849 /* UIView+SLAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SLAdditions.h"; sourceTree = "<group>"; };
+		06ED3DEC1C4246FC002B4849 /* UIView+SLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,13 +81,52 @@
 		0635953A1C40C5210094C7C5 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				063780311C4204610027EA7C /* Selection@2x.png */,
+				063780321C4204610027EA7C /* ToSelection@2x.png */,
 				063595371C40BA210094C7C5 /* Marcos.h */,
+				06ED3DEB1C4246FC002B4849 /* UIView+SLAdditions.h */,
+				06ED3DEC1C4246FC002B4849 /* UIView+SLAdditions.m */,
 				0635953B1C40D8C50094C7C5 /* UIAlertView+Blocks.h */,
 				0635953C1C40D8C50094C7C5 /* UIAlertView+Blocks.m */,
 				0635953D1C40D8C50094C7C5 /* UIViewController+SLAlert.h */,
 				0635953E1C40D8C50094C7C5 /* UIViewController+SLAlert.m */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		063780261C41FE050027EA7C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				063595411C40E9340094C7C5 /* AGNAlbum.h */,
+				063595421C40E9340094C7C5 /* AGNAlbum.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		063780271C41FE0B0027EA7C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				06E6834B1C3DF47A00EF0C94 /* AGNPhotosPickerController.h */,
+				06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */,
+				063595341C40B7B80094C7C5 /* AGNAlbumsViewController.h */,
+				063595351C40B7B80094C7C5 /* AGNAlbumsViewController.m */,
+				063780291C41FE570027EA7C /* AGNPhotosViewController.h */,
+				0637802A1C41FE570027EA7C /* AGNPhotosViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		063780281C41FE120027EA7C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				063595471C40FB120094C7C5 /* AGNAlbumCell.h */,
+				063595481C40FB120094C7C5 /* AGNAlbumCell.m */,
+				063595491C40FB120094C7C5 /* AGNAlbumCell.xib */,
+				0637802C1C4203CB0027EA7C /* AGNPhotoCell.h */,
+				0637802D1C4203CB0027EA7C /* AGNPhotoCell.m */,
+				0637802E1C4203CB0027EA7C /* AGNPhotoCell.xib */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		06E6831A1C3DED6500EF0C94 = {
@@ -120,15 +174,9 @@
 		06E6834A1C3DF43600EF0C94 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				063595411C40E9340094C7C5 /* AGNAlbum.h */,
-				063595421C40E9340094C7C5 /* AGNAlbum.m */,
-				06E6834B1C3DF47A00EF0C94 /* AGNPhotosPickerController.h */,
-				06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */,
-				063595341C40B7B80094C7C5 /* AGNAlbumsViewController.h */,
-				063595351C40B7B80094C7C5 /* AGNAlbumsViewController.m */,
-				063595471C40FB120094C7C5 /* AGNAlbumCell.h */,
-				063595481C40FB120094C7C5 /* AGNAlbumCell.m */,
-				063595491C40FB120094C7C5 /* AGNAlbumCell.xib */,
+				063780261C41FE050027EA7C /* Model */,
+				063780281C41FE120027EA7C /* View */,
+				063780271C41FE0B0027EA7C /* Controller */,
 				0635953A1C40C5210094C7C5 /* Helper */,
 			);
 			path = Source;
@@ -194,7 +242,10 @@
 				0635954B1C40FB120094C7C5 /* AGNAlbumCell.xib in Resources */,
 				06E683361C3DED6600EF0C94 /* LaunchScreen.storyboard in Resources */,
 				06E683331C3DED6600EF0C94 /* Assets.xcassets in Resources */,
+				063780301C4203CB0027EA7C /* AGNPhotoCell.xib in Resources */,
 				06E683311C3DED6600EF0C94 /* Main.storyboard in Resources */,
+				063780331C4204610027EA7C /* Selection@2x.png in Resources */,
+				063780341C4204610027EA7C /* ToSelection@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +257,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0635954A1C40FB120094C7C5 /* AGNAlbumCell.m in Sources */,
+				06ED3DED1C4246FC002B4849 /* UIView+SLAdditions.m in Sources */,
+				0637802F1C4203CB0027EA7C /* AGNPhotoCell.m in Sources */,
 				063595401C40D8C60094C7C5 /* UIViewController+SLAlert.m in Sources */,
 				063595361C40B7B80094C7C5 /* AGNAlbumsViewController.m in Sources */,
 				06E6832E1C3DED6600EF0C94 /* ViewController.m in Sources */,
@@ -213,6 +266,7 @@
 				063595431C40E9340094C7C5 /* AGNAlbum.m in Sources */,
 				0635953F1C40D8C60094C7C5 /* UIAlertView+Blocks.m in Sources */,
 				06E683281C3DED6500EF0C94 /* main.m in Sources */,
+				0637802B1C41FE570027EA7C /* AGNPhotosViewController.m in Sources */,
 				06E6834D1C3DF47A00EF0C94 /* AGNPhotosPickerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
