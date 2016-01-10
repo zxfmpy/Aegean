@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AGNPhotosPickerController : UINavigationController
+@class AGNPhotosPickerController;
+@protocol AGNPhotosPickerControllerDelegate <NSObject>
+- (void)photosPickerControllerDidCancel:(AGNPhotosPickerController *)picker;
+- (void)photosPickerController:(AGNPhotosPickerController *)picker didFinishPickingPhotos:(NSArray *)photos;
+@end
 
+@interface AGNPhotosPickerController : UINavigationController
+@property (nonatomic, weak) id<AGNPhotosPickerControllerDelegate> delegate;
 @end

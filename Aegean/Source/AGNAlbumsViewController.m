@@ -10,6 +10,7 @@
 #import "UIViewController+SLAlert.h"
 #import "AGNPhotosViewController.h"
 #import "AGNAlbumCell.h"
+#import "AGNPhotosPickerController.h"
 
 @interface AGNAlbumsViewController ()
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
@@ -140,6 +141,11 @@ static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
 
 #pragma mark - Action
 - (void)cancel:(UIBarButtonItem *)sender {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
+    if ([picker.delegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
+        [picker.delegate photosPickerControllerDidCancel:picker];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    }
 }
 @end

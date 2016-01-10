@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "AGNPhotosPickerController.h"
 
-@interface ViewController ()
+@interface ViewController () <AGNPhotosPickerControllerDelegate>
 
 @end
 
@@ -22,7 +22,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self showPhotosPicker:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,6 +31,17 @@
 
 - (IBAction)showPhotosPicker:(id)sender {
     AGNPhotosPickerController *photosPicker = [[AGNPhotosPickerController alloc] init];
+    photosPicker.delegate = self;
     [self presentViewController:photosPicker animated:YES completion:NULL];
+}
+
+- (void)photosPickerControllerDidCancel:(AGNPhotosPickerController *)picker {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+    return;
+}
+
+- (void)photosPickerController:(AGNPhotosPickerController *)picker didFinishPickingPhotos:(NSArray *)photos {
+    NSLog(@"%@", photos);
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 @end

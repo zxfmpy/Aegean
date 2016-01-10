@@ -8,6 +8,7 @@
 
 #import "AGNPhotosViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "AGNPhotosPickerController.h"
 #import "AGNPhotoCell.h"
 #import "Marcos.h"
 #import "UIView+SLAdditions.h"
@@ -108,7 +109,12 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 #pragma mark <Action>
 - (void)cancel:(UIBarButtonItem *)sender {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
+    if ([picker.delegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
+        [picker.delegate photosPickerControllerDidCancel:picker];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    }
 }
 
 - (void)preview:(UIBarButtonItem *)sender {
@@ -116,7 +122,20 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 }
 
 - (void)done:(UIBarButtonItem *)sender {
-    
+    AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
+    if ([picker.delegate respondsToSelector:@selector(photosPickerController:didFinishPickingPhotos:)]) {
+        NSMutableArray *photos = [NSMutableArray array];
+        for (NSNumber *indexNumber in self.selectedPhotosIndexes) {
+            NSUInteger index = [indexNumber unsignedIntegerValue];
+            ALAsset *asset = [self.album.photos objectAtIndex:index];
+            ALAssetRepresentation *representation = asset.defaultRepresentation;
+            UIImage *image = [[UIImage alloc] initWithCGImage:representation.fullResolutionImage scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+            [photos addObject:image];
+        }
+        [picker.delegate photosPickerController:picker didFinishPickingPhotos:[photos copy]];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    }
 }
 
 - (void)selectPhoto:(UIButton *)sender {
