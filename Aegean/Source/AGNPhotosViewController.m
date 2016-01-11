@@ -16,8 +16,11 @@
 @interface AGNPhotosViewController ()
 @property (nonatomic, weak) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, weak) UIBarButtonItem *doneBarButtonItem;
-@property (nonatomic, strong) NSMutableArray *selectedPhotosIndexes;
 @property (nonatomic, strong) UILabel *infoLabel;
+
+@property (nonatomic, strong) NSMutableArray *selectedPhotosIndexes;
+@property (nonatomic, strong) NSMutableArray *photos;
+@property (nonatomic, assign) BOOL stop;
 @end
 
 @implementation AGNPhotosViewController
@@ -27,6 +30,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.selectedPhotosIndexes = [NSMutableArray array];
+    
     self.title = self.album.name;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
@@ -51,9 +55,29 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    if (self.isMovingFromParentViewController) {
+        self.stop = YES;
+    }
     self.navigationController.toolbarHidden = YES;
     [self.infoLabel removeFromSuperview];
     [super viewWillDisappear:animated];
+}
+
+- (void)setAlbum:(AGNAlbum *)album {
+    _album = album;
+    if (!self.photos) {
+        self.photos = [NSMutableArray array];
+    } else {
+        [self.photos removeAllObjects];
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        for (ALAsset *asset in self.album.photos) {
+            if (self.stop) {
+                break;
+            }
+            [self.photos addObject:[UIImage imageWithCGImage:asset.aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp]];
+        }
+    });
 }
 
 #pragma mark <Private>
@@ -94,8 +118,11 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     AGNPhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kPhotoCellReuseIdentifier forIndexPath:indexPath];
     NSUInteger index = indexPath.row;
-    ALAsset *asset = (ALAsset *)[self.album.photos objectAtIndex:index];
-    [cell setImage:[UIImage imageWithCGImage:asset.aspectRatioThumbnail]];
+    if (index < self.photos.count) {
+        [cell setImage:[self.photos objectAtIndex:index]];
+    } else {
+        [cell setImage:[UIImage imageWithCGImage:((ALAsset *)[self.album.photos objectAtIndex:index]).aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp]];
+    }
     cell.selectionImageView.image = [self.selectedPhotosIndexes containsObject:@(index)] ? [UIImage imageNamed:@"Selection.png"] : [UIImage imageNamed:@"ToSelection.png"];
     cell.selectionButton.tag = index;
     [cell.selectionButton addTarget:self action:@selector(selectPhoto:) forControlEvents:UIControlEventTouchUpInside];
@@ -109,6 +136,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 #pragma mark <Action>
 - (void)cancel:(UIBarButtonItem *)sender {
+    self.stop = YES;
     AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
     if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
         [picker.pickerDelegate photosPickerControllerDidCancel:picker];

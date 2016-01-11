@@ -74,13 +74,13 @@
     
     NSInteger index = album.photos.count;
     if (--index >= 0) {
-        self.imageView1.image = [UIImage imageWithCGImage: [(ALAsset *)[album.photos objectAtIndex:index] aspectRatioThumbnail]];
+        self.imageView1.image = [UIImage imageWithCGImage: [(ALAsset *)[album.photos objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
     }
     if (--index >= 0) {
-        self.imageView2.image = [UIImage imageWithCGImage: [(ALAsset *)[album.photos objectAtIndex:index] aspectRatioThumbnail]];
+        self.imageView2.image = [UIImage imageWithCGImage: [(ALAsset *)[album.photos objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
     }
     if (--index >= 0) {
-        self.imageView3.image = [UIImage imageWithCGImage: [(ALAsset *)[album.photos objectAtIndex:index] aspectRatioThumbnail]];
+        self.imageView3.image = [UIImage imageWithCGImage: [(ALAsset *)[album.photos objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
     }
 }
 @end
