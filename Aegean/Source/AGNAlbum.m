@@ -14,7 +14,9 @@
 {
     self = [super init];
     if (self) {
-        self.photos = [NSMutableArray array];
+        self.assets = [NSMutableArray array];
+        self.aspectRatioThumbnails = [NSMutableArray array];
+        self.fullResolutionImages = [NSMutableArray array];
     }
     return self;
 }
@@ -52,5 +54,26 @@
     
     // Return array of property names
     return array;
+}
+
+- (void)loadAspectRatioThumbnailsAsynchronously {
+    if (self.aspectRatioThumbnails.count < self.assets.count) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            for (int i = (int)self.aspectRatioThumbnails.count; i < self.assets.count; i++) {
+                ALAsset *asset = [self.assets objectAtIndex:i];
+                [self.aspectRatioThumbnails addObject:[UIImage imageWithCGImage:asset.aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp]];
+            }
+        });
+    }
+}
+
+- (void)prepareForFullResolutionImagesAsynchronously {
+    if (self.fullResolutionImages.count < self.assets.count) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            for (int i = (int)self.aspectRatioThumbnails.count; i < self.assets.count; i++) {
+                [self.fullResolutionImages addObject:[NSNull null]];
+            }
+        });
+    }
 }
 @end

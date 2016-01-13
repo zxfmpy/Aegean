@@ -19,8 +19,6 @@
 @property (nonatomic, strong) UILabel *infoLabel;
 
 @property (nonatomic, strong) NSMutableArray *selectedPhotosIndexes;
-@property (nonatomic, strong) NSMutableArray *photos;
-@property (nonatomic, assign) BOOL stop;
 @end
 
 @implementation AGNPhotosViewController
@@ -55,9 +53,6 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    if (self.isMovingFromParentViewController) {
-        self.stop = YES;
-    }
     self.navigationController.toolbarHidden = YES;
     [self.infoLabel removeFromSuperview];
     [super viewWillDisappear:animated];
@@ -65,19 +60,8 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 - (void)setAlbum:(AGNAlbum *)album {
     _album = album;
-    if (!self.photos) {
-        self.photos = [NSMutableArray array];
-    } else {
-        [self.photos removeAllObjects];
-    }
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        for (ALAsset *asset in self.album.photos) {
-            if (self.stop) {
-                break;
-            }
-            [self.photos addObject:[UIImage imageWithCGImage:asset.aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp]];
-        }
-    });
+    [_album loadAspectRatioThumbnailsAsynchronously];
+    [_album prepareForFullResolutionImagesAsynchronously];
 }
 
 #pragma mark <Private>
@@ -112,16 +96,16 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.album.photos.count;
+    return self.album.assets.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     AGNPhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kPhotoCellReuseIdentifier forIndexPath:indexPath];
     NSUInteger index = indexPath.row;
-    if (index < self.photos.count) {
-        [cell setImage:[self.photos objectAtIndex:index]];
+    if (index < self.album.aspectRatioThumbnails.count) {
+        [cell setImage:[self.album.aspectRatioThumbnails objectAtIndex:index]];
     } else {
-        [cell setImage:[UIImage imageWithCGImage:((ALAsset *)[self.album.photos objectAtIndex:index]).aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp]];
+        [cell setImage:[UIImage imageWithCGImage:((ALAsset *)[self.album.assets objectAtIndex:index]).aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp]];
     }
     cell.selectionImageView.image = [self.selectedPhotosIndexes containsObject:@(index)] ? [UIImage imageNamed:@"Selection.png"] : [UIImage imageNamed:@"ToSelection.png"];
     cell.selectionButton.tag = index;
@@ -136,7 +120,6 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 #pragma mark <Action>
 - (void)cancel:(UIBarButtonItem *)sender {
-    self.stop = YES;
     AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
     if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
         [picker.pickerDelegate photosPickerControllerDidCancel:picker];
@@ -155,7 +138,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
         NSMutableArray *photos = [NSMutableArray array];
         for (NSNumber *indexNumber in self.selectedPhotosIndexes) {
             NSUInteger index = [indexNumber unsignedIntegerValue];
-            ALAsset *asset = [self.album.photos objectAtIndex:index];
+            ALAsset *asset = [self.album.assets objectAtIndex:index];
             ALAssetRepresentation *representation = asset.defaultRepresentation;
             UIImage *image = [[UIImage alloc] initWithCGImage:representation.fullResolutionImage scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
             [photos addObject:image];

@@ -76,13 +76,13 @@ static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
             album.type = [[group valueForProperty:ALAssetsGroupPropertyType] unsignedIntegerValue];
             ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
                 if (result) {
-                    [album.photos addObject:result];
+                    [album.assets addObject:result];
                     
                     // look for screenshot
                     if ([[group valueForProperty:ALAssetsGroupPropertyType] unsignedIntegerValue] == ALAssetsGroupSavedPhotos) {
                         ALAssetRepresentation *representation = result.defaultRepresentation;
                         if ([representation.UTI isEqualToString:@"public.png"]) {
-                            [screenshotsAlbum.photos addObject:result];
+                            [screenshotsAlbum.assets addObject:result];
                         }
                     }
                 }
@@ -90,7 +90,7 @@ static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
             [group enumerateAssetsUsingBlock:assetsEnumerationBlock];
             [self.albums addObject:album];
         } else {
-            if (![self.albums containsObject:screenshotsAlbum] && screenshotsAlbum.photos.count) {
+            if (![self.albums containsObject:screenshotsAlbum] && screenshotsAlbum.assets.count) {
                 [self.albums addObject:screenshotsAlbum];
             }
             

@@ -70,17 +70,29 @@
 
 - (void)setAlbum:(AGNAlbum *)album {
     self.nameLabel.text = album.name;
-    self.quantityLabel.text = [NSString stringWithFormat:@"%ld", (long)album.photos.count];
+    self.quantityLabel.text = [NSString stringWithFormat:@"%ld", (long)album.assets.count];
     
-    NSInteger index = album.photos.count;
+    NSInteger index = album.assets.count;
     if (--index >= 0) {
-        self.imageView1.image = [UIImage imageWithCGImage: [(ALAsset *)[album.photos objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+        if (index < album.aspectRatioThumbnails.count) {
+            self.imageView1.image = [album.aspectRatioThumbnails objectAtIndex:index];
+        } else {
+            self.imageView1.image = [UIImage imageWithCGImage: [(ALAsset *)[album.assets objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+        }
     }
     if (--index >= 0) {
-        self.imageView2.image = [UIImage imageWithCGImage: [(ALAsset *)[album.photos objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+        if (index < album.aspectRatioThumbnails.count) {
+            self.imageView2.image = [album.aspectRatioThumbnails objectAtIndex:index];
+        } else {
+            self.imageView2.image = [UIImage imageWithCGImage: [(ALAsset *)[album.assets objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+        }
     }
     if (--index >= 0) {
-        self.imageView3.image = [UIImage imageWithCGImage: [(ALAsset *)[album.photos objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+        if (index < album.aspectRatioThumbnails.count) {
+            self.imageView3.image = [album.aspectRatioThumbnails objectAtIndex:index];
+        } else {
+            self.imageView3.image = [UIImage imageWithCGImage: [(ALAsset *)[album.assets objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+        }
     }
 }
 @end
