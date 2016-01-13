@@ -27,6 +27,10 @@
 		06E683361C3DED6600EF0C94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06E683341C3DED6600EF0C94 /* LaunchScreen.storyboard */; };
 		06E6834D1C3DF47A00EF0C94 /* AGNPhotosPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */; };
 		06ED3DED1C4246FC002B4849 /* UIView+SLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 06ED3DEC1C4246FC002B4849 /* UIView+SLAdditions.m */; };
+		48AE60221C4652C100661556 /* AGNPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE60211C4652C100661556 /* AGNPageViewController.m */; };
+		48AE602C1C4660E100661556 /* ToSelectionInBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AE602B1C4660E100661556 /* ToSelectionInBar@2x.png */; };
+		48AE602E1C46612800661556 /* SelectionInBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AE602D1C46612800661556 /* SelectionInBar@2x.png */; };
+		48AE60311C46739700661556 /* AGNPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE60301C46739700661556 /* AGNPhotoViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +68,12 @@
 		06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPhotosPickerController.m; sourceTree = "<group>"; };
 		06ED3DEB1C4246FC002B4849 /* UIView+SLAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SLAdditions.h"; sourceTree = "<group>"; };
 		06ED3DEC1C4246FC002B4849 /* UIView+SLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLAdditions.m"; sourceTree = "<group>"; };
+		48AE60201C4652C100661556 /* AGNPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPageViewController.h; sourceTree = "<group>"; };
+		48AE60211C4652C100661556 /* AGNPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPageViewController.m; sourceTree = "<group>"; };
+		48AE602B1C4660E100661556 /* ToSelectionInBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ToSelectionInBar@2x.png"; sourceTree = "<group>"; };
+		48AE602D1C46612800661556 /* SelectionInBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SelectionInBar@2x.png"; sourceTree = "<group>"; };
+		48AE602F1C46739700661556 /* AGNPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPhotoViewController.h; sourceTree = "<group>"; };
+		48AE60301C46739700661556 /* AGNPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPhotoViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +92,9 @@
 			isa = PBXGroup;
 			children = (
 				063780311C4204610027EA7C /* Selection@2x.png */,
+				48AE602D1C46612800661556 /* SelectionInBar@2x.png */,
 				063780321C4204610027EA7C /* ToSelection@2x.png */,
+				48AE602B1C4660E100661556 /* ToSelectionInBar@2x.png */,
 				063595371C40BA210094C7C5 /* Marcos.h */,
 				06ED3DEB1C4246FC002B4849 /* UIView+SLAdditions.h */,
 				06ED3DEC1C4246FC002B4849 /* UIView+SLAdditions.m */,
@@ -112,6 +124,10 @@
 				063595351C40B7B80094C7C5 /* AGNAlbumsViewController.m */,
 				063780291C41FE570027EA7C /* AGNPhotosViewController.h */,
 				0637802A1C41FE570027EA7C /* AGNPhotosViewController.m */,
+				48AE60201C4652C100661556 /* AGNPageViewController.h */,
+				48AE60211C4652C100661556 /* AGNPageViewController.m */,
+				48AE602F1C46739700661556 /* AGNPhotoViewController.h */,
+				48AE60301C46739700661556 /* AGNPhotoViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -240,6 +256,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0635954B1C40FB120094C7C5 /* AGNAlbumCell.xib in Resources */,
+				48AE602C1C4660E100661556 /* ToSelectionInBar@2x.png in Resources */,
+				48AE602E1C46612800661556 /* SelectionInBar@2x.png in Resources */,
 				06E683361C3DED6600EF0C94 /* LaunchScreen.storyboard in Resources */,
 				06E683331C3DED6600EF0C94 /* Assets.xcassets in Resources */,
 				063780301C4203CB0027EA7C /* AGNPhotoCell.xib in Resources */,
@@ -256,6 +274,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48AE60311C46739700661556 /* AGNPhotoViewController.m in Sources */,
 				0635954A1C40FB120094C7C5 /* AGNAlbumCell.m in Sources */,
 				06ED3DED1C4246FC002B4849 /* UIView+SLAdditions.m in Sources */,
 				0637802F1C4203CB0027EA7C /* AGNPhotoCell.m in Sources */,
@@ -265,6 +284,7 @@
 				06E6832B1C3DED6500EF0C94 /* AppDelegate.m in Sources */,
 				063595431C40E9340094C7C5 /* AGNAlbum.m in Sources */,
 				0635953F1C40D8C60094C7C5 /* UIAlertView+Blocks.m in Sources */,
+				48AE60221C4652C100661556 /* AGNPageViewController.m in Sources */,
 				06E683281C3DED6500EF0C94 /* main.m in Sources */,
 				0637802B1C41FE570027EA7C /* AGNPhotosViewController.m in Sources */,
 				06E6834D1C3DF47A00EF0C94 /* AGNPhotosPickerController.m in Sources */,

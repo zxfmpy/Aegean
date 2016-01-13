@@ -12,6 +12,7 @@
 #import "AGNPhotoCell.h"
 #import "Marcos.h"
 #import "UIView+SLAdditions.h"
+#import "AGNPageViewController.h"
 
 @interface AGNPhotosViewController ()
 @property (nonatomic, weak) UIBarButtonItem *previewBarButtonItem;
@@ -32,6 +33,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     self.title = self.album.name;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self p_configureToolBar];
     
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
@@ -50,6 +52,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     [super viewWillAppear:animated];
     self.navigationController.toolbarHidden = NO;
     [self.navigationController.toolbar addSubview:self.infoLabel];
+    [self.collectionView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -106,7 +109,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     } else {
         [cell setImage:[UIImage imageWithCGImage:((ALAsset *)[self.album.assets objectAtIndex:index]).aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp]];
     }
-    cell.selectionImageView.image = [self.selectedPhotosIndexes containsObject:@(index)] ? [UIImage imageNamed:@"Selection.png"] : [UIImage imageNamed:@"ToSelection.png"];
+    cell.selectionImageView.image = [self.selectedPhotosIndexes containsObject:@(index)] ? [UIImage imageNamed:@"Selection"] : [UIImage imageNamed:@"ToSelection"];
     cell.selectionButton.tag = index;
     [cell.selectionButton addTarget:self action:@selector(selectPhoto:) forControlEvents:UIControlEventTouchUpInside];
     return cell;
@@ -114,7 +117,11 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 #pragma mark <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-#warning
+    AGNPageViewController *pageVC = [[AGNPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:@{UIPageViewControllerOptionInterPageSpacingKey: @(20)}];
+    pageVC.album = self.album;
+    pageVC.selectedPhotosIndexes = self.selectedPhotosIndexes;
+    pageVC.startingIndex = indexPath.row;
+    [self.navigationController pushViewController:pageVC animated:YES];
 }
 
 #pragma mark <Action>
@@ -153,10 +160,10 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     AGNPhotoCell *cell = (AGNPhotoCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     if ([self.selectedPhotosIndexes containsObject:@(index)]) {
         [self.selectedPhotosIndexes removeObject:@(index)];
-        cell.selectionImageView.image = [UIImage imageNamed:@"ToSelection.png"];
+        cell.selectionImageView.image = [UIImage imageNamed:@"ToSelection"];
     } else {
         [self.selectedPhotosIndexes addObject:@(index)];
-        cell.selectionImageView.image = [UIImage imageNamed:@"Selection.png"];
+        cell.selectionImageView.image = [UIImage imageNamed:@"Selection"];
         cell.selectionImageView.transform = CGAffineTransformMakeScale(0.5, 0.5);
         [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             cell.selectionImageView.transform = CGAffineTransformMakeScale(1.1, 1.1);
