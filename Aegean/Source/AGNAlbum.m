@@ -7,7 +7,7 @@
 //
 
 #import "AGNAlbum.h"
-#import <objc/runtime.h> 
+#import <objc/runtime.h>
 
 @implementation AGNAlbum
 - (instancetype)init
@@ -16,7 +16,6 @@
     if (self) {
         self.assets = [NSMutableArray array];
         self.aspectRatioThumbnails = [NSMutableArray array];
-        self.fullResolutionImages = [NSMutableArray array];
     }
     return self;
 }
@@ -67,13 +66,4 @@
     }
 }
 
-- (void)prepareForFullResolutionImagesAsynchronously {
-    if (self.fullResolutionImages.count < self.assets.count) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            for (int i = (int)self.aspectRatioThumbnails.count; i < self.assets.count; i++) {
-                [self.fullResolutionImages addObject:[NSNull null]];
-            }
-        });
-    }
-}
 @end

@@ -35,7 +35,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     [self p_configureToolBar];
     
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    CGFloat spacing = 2;
+    CGFloat spacing = 3;
     layout.minimumInteritemSpacing = spacing;
     layout.minimumLineSpacing = spacing;
     CGFloat side = ([UIScreen mainScreen].bounds.size.width - spacing * 3) / 4;
@@ -61,7 +61,6 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 - (void)setAlbum:(AGNAlbum *)album {
     _album = album;
     [_album loadAspectRatioThumbnailsAsynchronously];
-    [_album prepareForFullResolutionImagesAsynchronously];
 }
 
 #pragma mark <Private>
@@ -115,7 +114,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 #pragma mark <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    // TODO:
+#warning
 }
 
 #pragma mark <Action>
@@ -129,7 +128,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 }
 
 - (void)preview:(UIBarButtonItem *)sender {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+#warning
 }
 
 - (void)done:(UIBarButtonItem *)sender {

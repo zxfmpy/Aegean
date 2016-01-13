@@ -15,8 +15,6 @@
 @property (nonatomic, assign) ALAssetsGroupType type;
 @property (nonatomic, strong) NSMutableArray *assets;
 @property (nonatomic, strong) NSMutableArray *aspectRatioThumbnails;
-@property (nonatomic, strong) NSMutableArray *fullResolutionImages;
 
 - (void)loadAspectRatioThumbnailsAsynchronously;
-- (void)prepareForFullResolutionImagesAsynchronously;
 @end
