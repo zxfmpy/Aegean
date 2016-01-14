@@ -50,13 +50,17 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.toolbarHidden = NO;
+    if (self.isMovingToParentViewController) {
+        self.navigationController.toolbarHidden = NO;
+    }
     [self.navigationController.toolbar addSubview:self.infoLabel];
     [self.collectionView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    self.navigationController.toolbarHidden = YES;
+    if (self.isMovingFromParentViewController) {
+        self.navigationController.toolbarHidden = YES;
+    }
     [self.infoLabel removeFromSuperview];
     [super viewWillDisappear:animated];
 }
@@ -85,7 +89,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     
     self.infoLabel = [[UILabel alloc] init];
     self.infoLabel.font = [UIFont systemFontOfSize:kBarButtomItemFontSize];
-    self.infoLabel.textColor = [UIColor grayColor];
+    self.infoLabel.textColor = [UIColor lightGrayColor];
     self.infoLabel.backgroundColor = [UIColor clearColor];
     self.infoLabel.textAlignment = NSTextAlignmentCenter;
     self.infoLabel.frame = CGRectMake(0, 0, self.navigationController.toolbar.width - (57 + 40), self.navigationController.toolbar.height);

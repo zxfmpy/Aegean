@@ -29,7 +29,11 @@
     self.navigationBar.barTintColor = HEXCOLOR(0x343339);
     self.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-    self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    self.navigationBar.barStyle = UIBarStyleBlack;
+    self.navigationBar.translucent = YES;
+    
+    self.toolbar.barTintColor = [UIColor whiteColor];
+    self.toolbar.translucent = YES;
 }
 
 @end

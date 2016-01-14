@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AGNImageScrollView.h"
 
 @interface AGNPhotoViewController : UIViewController
 @property (nonatomic, strong) UIImage *image;

@@ -7,9 +7,8 @@
 //
 
 #import "AGNPhotoViewController.h"
-#import "AGNImageScrollView.h"
 
-@interface AGNPhotoViewController () <AGNImageScrollViewDelegate>
+@interface AGNPhotoViewController ()
 @property (nonatomic, weak) AGNImageScrollView *imageSV;
 @end
 
@@ -18,7 +17,9 @@
 - (void)loadView {
     AGNImageScrollView *imageScrollView = [[AGNImageScrollView alloc] init];
     imageScrollView.image = self.image;
-    imageScrollView.agnDelegate = self;
+    if ([self.parentViewController conformsToProtocol:@protocol(AGNImageScrollViewDelegate)]) {
+        imageScrollView.agnDelegate = (id<AGNImageScrollViewDelegate>)self.parentViewController;
+    }
     
     self.view = imageScrollView;
     self.imageSV = imageScrollView;
@@ -41,7 +42,4 @@
     }
 }
 
-#pragma mark <AGNImageScrollViewDelegate>
-- (void)imageScrollView:(AGNImageScrollView *)imageScrollView didTap:(UITapGestureRecognizer *)tap {
-}
 @end
