@@ -46,8 +46,14 @@
     CGSize originalSize = self.frame.size;
     [super setFrame:frame];
     if (!CGSizeEqualToSize(originalSize, frame.size)) {
-        self.imageView.frame = self.bounds;
-        self.contentSize = self.imageView.bounds.size;
+        self.zoomScale = 1.0;
+        CGSize imageSize = self.imageView.image.size;
+        CGFloat wRatio = frame.size.width / imageSize.width;
+        CGFloat hRatio = frame.size.height / imageSize.height;
+        CGFloat ratio = MIN(wRatio, hRatio);
+        self.imageView.frame = CGRectMake(0, 0, imageSize.width * ratio, imageSize.height * ratio);
+        self.imageView.center = CGPointMake(frame.size.width / 2.0, frame.size.height / 2.0);
+        self.contentSize = frame.size;
     }
 }
 
@@ -73,9 +79,12 @@
 }
 
 - (void)doubleTap:(UITapGestureRecognizer *)tap {
-    CGFloat scale = (self.zoomScale == 1.0) ? MIN(2.55, self.maximumZoomScale) : 1.0;
-    
     CGPoint center = [tap locationInView:self];
+    if (!CGRectContainsPoint(self.imageView.frame, center)) {
+        [self singleTap:tap];
+        return;
+    }
+    CGFloat scale = (self.zoomScale == 1.0) ? MIN(2.55, self.maximumZoomScale) : 1.0;
     CGRect zoomRect;
     zoomRect.size.height = [self frame].size.height / scale;
     zoomRect.size.width  = [self frame].size.width  / scale;
