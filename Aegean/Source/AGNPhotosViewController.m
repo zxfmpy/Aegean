@@ -70,7 +70,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     [_album loadAspectRatioThumbnailsAsynchronously];
 }
 
-#pragma mark <Private>
+#pragma mark - Private
 - (void)p_configureToolBar {
     UIBarButtonItem *flexibleSpaceBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
@@ -96,6 +96,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     self.infoLabel.center = CGPointMake(self.navigationController.toolbar.width / 2.0, self.navigationController.toolbar.height / 2.0);
 }
 
+#pragma mark - Protocol
 #pragma mark <UICollectionViewDataSource>
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
@@ -128,7 +129,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     [self.navigationController pushViewController:pageVC animated:YES];
 }
 
-#pragma mark <Action>
+#pragma mark - Action
 - (void)cancel:(UIBarButtonItem *)sender {
     AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
     if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
