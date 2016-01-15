@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "AGNAlbum.h"
 
-static const CGFloat kBarButtomItemFontSize = 16;
-
 @interface AGNPhotosViewController : UICollectionViewController
 @property (nonatomic, strong) AGNAlbum *album;
 @end

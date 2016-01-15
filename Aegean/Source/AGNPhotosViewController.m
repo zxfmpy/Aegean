@@ -7,12 +7,12 @@
 //
 
 #import "AGNPhotosViewController.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 #import "AGNPhotosPickerController.h"
 #import "AGNPhotoCell.h"
 #import "Marcos.h"
 #import "UIView+SLAdditions.h"
 #import "AGNPageViewController.h"
+#import "Constants.h"
 
 @interface AGNPhotosViewController ()
 @property (nonatomic, weak) UIBarButtonItem *previewBarButtonItem;
@@ -54,6 +54,15 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
         self.navigationController.toolbarHidden = NO;
     }
     [self.navigationController.toolbar addSubview:self.infoLabel];
+    if (self.selectedPhotosIndexes.count) {
+        self.previewBarButtonItem.enabled = YES;
+        self.doneBarButtonItem.enabled = YES;
+        self.infoLabel.text = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
+    } else {
+        self.previewBarButtonItem.enabled = NO;
+        self.doneBarButtonItem.enabled = NO;
+        self.infoLabel.text = nil;
+    }
     [self.collectionView reloadData];
 }
 
@@ -80,7 +89,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done:)];
     doneBarButtonItem.tintColor = HEXCOLOR(0x08BB08);
     [doneBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
-    self.toolbarItems = @[previewBarButtonItem, flexibleSpaceBarButton, doneBarButtonItem];
+    self.toolbarItems = @[/*previewBarButtonItem, */flexibleSpaceBarButton, doneBarButtonItem];
     
     self.previewBarButtonItem = previewBarButtonItem;
     self.doneBarButtonItem = doneBarButtonItem;

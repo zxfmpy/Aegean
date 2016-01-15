@@ -8,16 +8,21 @@
 
 #import "AGNPageViewController.h"
 #import "AGNPhotoViewController.h"
+#import "AGNPhotosPickerController.h"
 #import "Marcos.h"
 #import "UIView+SLAdditions.h"
+#import "Constants.h"
 
 @interface AGNPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, AGNImageScrollViewDelegate>
-@property (nonatomic, weak) UIImageView *imageView;
 @property (nonatomic, weak) UILabel *titleLabel;
 @property (nonatomic, weak) UILabel *dateLabel;
+@property (nonatomic, weak) UIImageView *imageView;
+@property (nonatomic, weak) UIBarButtonItem *doneBarButtonItem;
+@property (nonatomic, weak) UIBarButtonItem *resetBarButtonItem;
+@property (nonatomic, strong) UILabel *infoLabel;
+
 @property (nonatomic, assign) NSUInteger pendingCurrentIndex;
 @property (nonatomic, assign) BOOL isFullScreen;
-
 @property (nonatomic, strong) AGNPhotoViewController *photoVCBeforeStarting;
 @property (nonatomic, strong) AGNPhotoViewController *photoVCAfterStarting;
 @end
@@ -62,12 +67,14 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     if (!self.isMovingToParentViewController) {
         self.navigationController.toolbarHidden = NO;
     }
+    [self.navigationController.toolbar addSubview:self.infoLabel];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     if (!self.isMovingFromParentViewController) {
         self.navigationController.toolbarHidden = YES;
     }
+    [self.infoLabel removeFromSuperview];
     [super viewWillDisappear:animated];
 }
 
@@ -104,7 +111,33 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
 }
 
 - (void)p_configureToolBar {
+    UIBarButtonItem *flexibleSpaceBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
+    UIBarButtonItem *resetBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(reset:)];
+    resetBarButtonItem.tintColor = HEXCOLOR(0xC24065);
+    [resetBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
+    
+    UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done:)];
+    doneBarButtonItem.tintColor = HEXCOLOR(0x08BB08);
+    [doneBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
+    self.toolbarItems = @[resetBarButtonItem, flexibleSpaceBarButton, doneBarButtonItem];
+    
+    self.resetBarButtonItem = resetBarButtonItem;
+    self.resetBarButtonItem.enabled = (self.selectedPhotosIndexes.count > 0);
+    self.doneBarButtonItem = doneBarButtonItem;
+    self.doneBarButtonItem.enabled = (self.selectedPhotosIndexes.count > 0);
+    
+    self.infoLabel = [[UILabel alloc] init];
+    self.infoLabel.font = [UIFont systemFontOfSize:kBarButtomItemFontSize];
+    self.infoLabel.textColor = [UIColor lightGrayColor];
+    self.infoLabel.backgroundColor = [UIColor clearColor];
+    self.infoLabel.textAlignment = NSTextAlignmentCenter;
+    self.infoLabel.frame = CGRectMake(0, 0, self.navigationController.toolbar.width - (57 + 40), self.navigationController.toolbar.height);
+    self.infoLabel.center = CGPointMake(self.navigationController.toolbar.width / 2.0, self.navigationController.toolbar.height / 2.0);
+    
+    if (self.selectedPhotosIndexes.count) {
+        self.infoLabel.text = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
+    }
 }
 
 - (void)p_configureTitleView {
@@ -259,6 +292,38 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
         }];
 
     }
+    self.doneBarButtonItem.enabled = (self.selectedPhotosIndexes.count > 0);
+    self.resetBarButtonItem.enabled = (self.selectedPhotosIndexes.count > 0);
+    
+    if (self.selectedPhotosIndexes.count) {
+        self.infoLabel.text = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
+    } else {
+        self.infoLabel.text = nil;
+    }
 }
 
+- (void)done:(UIBarButtonItem *)sender {
+    AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
+    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerController:didFinishPickingPhotos:)]) {
+        NSMutableArray *photos = [NSMutableArray array];
+        for (NSNumber *indexNumber in self.selectedPhotosIndexes) {
+            NSUInteger index = [indexNumber unsignedIntegerValue];
+            ALAsset *asset = [self.album.assets objectAtIndex:index];
+            ALAssetRepresentation *representation = asset.defaultRepresentation;
+            UIImage *image = [[UIImage alloc] initWithCGImage:representation.fullResolutionImage scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+            [photos addObject:image];
+        }
+        [picker.pickerDelegate photosPickerController:picker didFinishPickingPhotos:[photos copy]];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    }
+}
+
+- (void)reset:(UIBarButtonItem *)sender {
+    [self.selectedPhotosIndexes removeAllObjects];
+    self.resetBarButtonItem.enabled = NO;
+    self.infoLabel.text = nil;
+    self.doneBarButtonItem.enabled = NO;
+    self.imageView.image = [UIImage imageNamed:@"ToSelectionInBar"];
+}
 @end

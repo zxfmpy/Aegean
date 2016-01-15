@@ -72,6 +72,7 @@
 		4811387E1C477EC5005BD239 /* AGNImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNImageScrollView.h; sourceTree = "<group>"; };
 		4811387F1C477EC5005BD239 /* AGNImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNImageScrollView.m; sourceTree = "<group>"; };
 		48304C811C48E1CB003C9DE3 /* ToSelectionInBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ToSelectionInBar@2x.png"; sourceTree = "<group>"; };
+		48304C831C48E5FC003C9DE3 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		48AE60201C4652C100661556 /* AGNPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPageViewController.h; sourceTree = "<group>"; };
 		48AE60211C4652C100661556 /* AGNPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPageViewController.m; sourceTree = "<group>"; };
 		48AE602D1C46612800661556 /* SelectionInBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SelectionInBar@2x.png"; sourceTree = "<group>"; };
@@ -99,6 +100,7 @@
 				063780321C4204610027EA7C /* ToSelection@2x.png */,
 				48304C811C48E1CB003C9DE3 /* ToSelectionInBar@2x.png */,
 				063595371C40BA210094C7C5 /* Marcos.h */,
+				48304C831C48E5FC003C9DE3 /* Constants.h */,
 				06ED3DEB1C4246FC002B4849 /* UIView+SLAdditions.h */,
 				06ED3DEC1C4246FC002B4849 /* UIView+SLAdditions.m */,
 				0635953B1C40D8C50094C7C5 /* UIAlertView+Blocks.h */,
