@@ -9,8 +9,11 @@
 #import "AGNPageViewController.h"
 #import "AGNPhotoViewController.h"
 #import "Marcos.h"
+#import "UIView+SLAdditions.h"
 
 @interface AGNPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, AGNImageScrollViewDelegate>
+@property (nonatomic, weak) UILabel *titleLabel;
+@property (nonatomic, weak) UILabel *dateLabel;
 @property (nonatomic, assign) NSUInteger pendingCurrentIndex;
 @property (nonatomic, assign) BOOL isFullScreen;
 @end
@@ -23,13 +26,15 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = HEXCOLOR(kViewBackgroundColorDecimal);
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nil style:UIBarButtonItemStylePlain target:self action:@selector(selectPhoto:)];
+    [self.navigationItem.rightBarButtonItem setImageInsets:UIEdgeInsetsMake(0, -8, 0, 8)];
+    [self configureTitleView];
     [self setCurrentIndex:self.startingIndex];
     
     self.dataSource = self;
     self.delegate = self;
-    self.automaticallyAdjustsScrollViewInsets = NO;
     AGNPhotoViewController *photoVC = [[AGNPhotoViewController alloc] init];
     photoVC.pageIndex = self.startingIndex;
     photoVC.image = [UIImage imageWithCGImage:[[(ALAsset *)[self.album.assets objectAtIndex:self.startingIndex] defaultRepresentation] fullResolutionImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
@@ -41,19 +46,36 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     if (!self.isMovingToParentViewController) {
         self.navigationController.toolbarHidden = NO;
     }
-    self.navigationController.toolbar.barTintColor = HEXCOLOR(0x343339);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     if (!self.isMovingFromParentViewController) {
         self.navigationController.toolbarHidden = YES;
     }
-    self.navigationController.toolbar.barTintColor = [UIColor whiteColor];
     [super viewWillDisappear:animated];
 }
 
+- (void)configureTitleView {
+    UIView *titleView = [[UIView alloc] init];
+    UILabel *titleLabel = [[UILabel alloc] init];
+    self.titleLabel = titleLabel;
+    self.titleLabel.textColor = [UIColor whiteColor];
+    self.titleLabel.font = BoldFont(16);
+    [titleView addSubview:self.titleLabel];
+    
+    UILabel *dateLabel = [[UILabel alloc] init];
+    self.dateLabel = dateLabel;
+    self.dateLabel.textColor = [UIColor whiteColor];
+    self.dateLabel.font = Font(12);
+    [titleView addSubview:self.dateLabel];
+    self.navigationItem.titleView = titleView;
+}
+
 - (void)setCurrentIndex:(NSUInteger)currentIndex {
-    self.title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex + 1, (long)self.album.assets.count];
+    NSString *title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex + 1, (long)self.album.assets.count];
+    ALAsset *asset = [self.album.assets objectAtIndex:currentIndex];
+    NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
+    [self setTitle:title date:date];
     
     UIBarButtonItem *rightBarButtonItem = self.navigationItem.rightBarButtonItem;
     if ([self.selectedPhotosIndexes containsObject:@(currentIndex)]) {
@@ -61,6 +83,27 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     } else {
         rightBarButtonItem.image = [UIImage imageNamed:@"ToSelectionInBar"];
     }
+}
+
+- (void)setTitle:(NSString *)title date:(NSDate *)date {
+    static NSDateFormatter *dateFormatter;
+    if (!dateFormatter) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"HH:mm, MMMM d, YYYY";
+    }
+    NSString *stringFromDate = [dateFormatter stringFromDate:date];
+    self.titleLabel.text = title;
+    self.dateLabel.text = stringFromDate;
+    [self.titleLabel sizeToFit];
+    [self.dateLabel sizeToFit];
+    
+    CGSize size = CGSizeMake(MAX(self.titleLabel.width, self.dateLabel.width), self.titleLabel.height + self.dateLabel.height);
+    UIView *titleView = self.navigationItem.titleView;
+    self.navigationItem.titleView = nil;
+    titleView.frame = CGRectMake(0, (self.navigationController.navigationBar.height - size.height) / 2.0, size.width, size.height);
+    self.titleLabel.center = CGPointMake(titleView.width / 2.0, self.titleLabel.height / 2.0);
+    self.dateLabel.center = CGPointMake(titleView.width / 2.0, self.titleLabel.height + self.dateLabel.height / 2.0);
+    self.navigationItem.titleView = titleView;
 }
 
 - (void)selectPhoto:(id)sender {
@@ -131,19 +174,18 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     maskView.backgroundColor = self.isFullScreen ? [UIColor blackColor] : HEXCOLOR(kViewBackgroundColorDecimal);
     maskView.alpha = 0.0;
     [self.view insertSubview:maskView atIndex:0];
-
+    
     CGRect barFrame = self.navigationController.navigationBar.frame;
-    [UIView animateWithDuration:0.33 animations:^{
+    [UIView animateWithDuration:0.33 delay:0 options:(self.isFullScreen ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut) animations:^{
         [self setNeedsStatusBarAppearanceUpdate];
         self.navigationController.navigationBar.alpha = alpha;
         self.navigationController.navigationBar.frame = barFrame;
-
         maskView.alpha = 1.0;
     } completion:^(BOOL finished) {
         [maskView removeFromSuperview];
         self.view.backgroundColor = self.isFullScreen ? [UIColor blackColor] : HEXCOLOR(kViewBackgroundColorDecimal);
     }];
-
+    
     self.navigationController.navigationBar.frame = CGRectZero;
     self.navigationController.navigationBar.frame = barFrame;
     
