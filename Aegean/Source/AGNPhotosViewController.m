@@ -17,7 +17,7 @@
 @interface AGNPhotosViewController ()
 @property (nonatomic, weak) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, weak) UIBarButtonItem *doneBarButtonItem;
-@property (nonatomic, strong) UILabel *infoLabel;
+@property (nonatomic, weak) UIBarButtonItem *infoBarButtonItem;
 
 @property (nonatomic, strong) NSMutableArray *selectedPhotosIndexes;
 @end
@@ -40,7 +40,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     CGFloat spacing = 3;
     layout.minimumInteritemSpacing = spacing;
     layout.minimumLineSpacing = spacing;
-    CGFloat side = ([UIScreen mainScreen].bounds.size.width - spacing * 3) / 4;
+    CGFloat side = (MIN(SCREEN_WIDTH, SCREEN_HEIGHT) - spacing * 3) / 4;
     layout.itemSize = CGSizeMake(side, side);
     self.collectionView.contentInset = UIEdgeInsetsMake(spacing, 0, spacing, 0);
     self.collectionView.backgroundColor = [UIColor whiteColor];
@@ -53,15 +53,14 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     if (self.isMovingToParentViewController) {
         self.navigationController.toolbarHidden = NO;
     }
-    [self.navigationController.toolbar addSubview:self.infoLabel];
     if (self.selectedPhotosIndexes.count) {
         self.previewBarButtonItem.enabled = YES;
         self.doneBarButtonItem.enabled = YES;
-        self.infoLabel.text = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
+        self.infoBarButtonItem.title = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
     } else {
         self.previewBarButtonItem.enabled = NO;
         self.doneBarButtonItem.enabled = NO;
-        self.infoLabel.text = nil;
+        self.infoBarButtonItem.title = nil;
     }
     [self.collectionView reloadData];
 }
@@ -70,7 +69,6 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     if (self.isMovingFromParentViewController) {
         self.navigationController.toolbarHidden = YES;
     }
-    [self.infoLabel removeFromSuperview];
     [super viewWillDisappear:animated];
 }
 
@@ -81,28 +79,31 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 #pragma mark - Private
 - (void)p_configureToolBar {
-    UIBarButtonItem *flexibleSpaceBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *flexibleSpaceBarButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *flexibleSpaceBarButton2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     UIBarButtonItem *previewBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Preview" style:UIBarButtonItemStylePlain target:self action:@selector(preview:)];
     previewBarButtonItem.tintColor = [UIColor blackColor];
     [previewBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
+    
+    UIBarButtonItem *infoBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:nil action:nil];
+    infoBarButtonItem.tintColor = [UIColor lightGrayColor];
+    [infoBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
+    
     UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done:)];
     doneBarButtonItem.tintColor = HEXCOLOR(0x08BB08);
     [doneBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
-    self.toolbarItems = @[/*previewBarButtonItem, */flexibleSpaceBarButton, doneBarButtonItem];
+    
+    UIBarButtonItem *fixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    fixedSpacer.width = 57 - 40;
+    
+    self.toolbarItems = @[previewBarButtonItem, flexibleSpaceBarButton1, infoBarButtonItem,flexibleSpaceBarButton2, fixedSpacer, doneBarButtonItem];
     
     self.previewBarButtonItem = previewBarButtonItem;
+    self.infoBarButtonItem = infoBarButtonItem;
     self.doneBarButtonItem = doneBarButtonItem;
     self.previewBarButtonItem.enabled = NO;
     self.doneBarButtonItem.enabled = NO;
-    
-    self.infoLabel = [[UILabel alloc] init];
-    self.infoLabel.font = [UIFont systemFontOfSize:kBarButtomItemFontSize];
-    self.infoLabel.textColor = [UIColor lightGrayColor];
-    self.infoLabel.backgroundColor = [UIColor clearColor];
-    self.infoLabel.textAlignment = NSTextAlignmentCenter;
-    self.infoLabel.frame = CGRectMake(0, 0, self.navigationController.toolbar.width - (57 + 40), self.navigationController.toolbar.height);
-    self.infoLabel.center = CGPointMake(self.navigationController.toolbar.width / 2.0, self.navigationController.toolbar.height / 2.0);
 }
 
 #pragma mark - Protocol
@@ -195,11 +196,11 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     if (self.selectedPhotosIndexes.count) {
         self.previewBarButtonItem.enabled = YES;
         self.doneBarButtonItem.enabled = YES;
-        self.infoLabel.text = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
+        self.infoBarButtonItem.title = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
     } else {
         self.previewBarButtonItem.enabled = NO;
         self.doneBarButtonItem.enabled = NO;
-        self.infoLabel.text = nil;
+        self.infoBarButtonItem.title = nil;
     }
 }
 @end
