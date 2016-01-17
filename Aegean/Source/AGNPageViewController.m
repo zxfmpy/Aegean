@@ -67,12 +67,14 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     if (!self.isMovingToParentViewController) {
         self.navigationController.toolbarHidden = NO;
     }
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     if (!self.isMovingFromParentViewController) {
         self.navigationController.toolbarHidden = YES;
     }
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     [super viewWillDisappear:animated];
 }
 
