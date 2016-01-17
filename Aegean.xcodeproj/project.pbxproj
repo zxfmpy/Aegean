@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06328FD01C4B723C0031B1F7 /* AGNPhotoPushAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 06328FCF1C4B723C0031B1F7 /* AGNPhotoPushAnimator.m */; };
 		063595361C40B7B80094C7C5 /* AGNAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 063595351C40B7B80094C7C5 /* AGNAlbumsViewController.m */; };
 		063595391C40BF2C0094C7C5 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 063595381C40BF2C0094C7C5 /* AssetsLibrary.framework */; };
 		0635953F1C40D8C60094C7C5 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 0635953C1C40D8C50094C7C5 /* UIAlertView+Blocks.m */; };
@@ -27,6 +28,7 @@
 		06E683361C3DED6600EF0C94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06E683341C3DED6600EF0C94 /* LaunchScreen.storyboard */; };
 		06E6834D1C3DF47A00EF0C94 /* AGNPhotosPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */; };
 		06ED3DED1C4246FC002B4849 /* UIView+SLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 06ED3DEC1C4246FC002B4849 /* UIView+SLAdditions.m */; };
+		06FEE9191C4B9C6100A02C95 /* AGNPhotoPopAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 06FEE9181C4B9C6100A02C95 /* AGNPhotoPopAnimator.m */; };
 		481138801C477EC5005BD239 /* AGNImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4811387F1C477EC5005BD239 /* AGNImageScrollView.m */; };
 		48304C821C48E1CB003C9DE3 /* ToSelectionInBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48304C811C48E1CB003C9DE3 /* ToSelectionInBar@2x.png */; };
 		48AE60221C4652C100661556 /* AGNPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AE60211C4652C100661556 /* AGNPageViewController.m */; };
@@ -35,6 +37,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		06328FCE1C4B723C0031B1F7 /* AGNPhotoPushAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPhotoPushAnimator.h; sourceTree = "<group>"; };
+		06328FCF1C4B723C0031B1F7 /* AGNPhotoPushAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPhotoPushAnimator.m; sourceTree = "<group>"; };
 		063595341C40B7B80094C7C5 /* AGNAlbumsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNAlbumsViewController.h; sourceTree = "<group>"; };
 		063595351C40B7B80094C7C5 /* AGNAlbumsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNAlbumsViewController.m; sourceTree = "<group>"; };
 		063595371C40BA210094C7C5 /* Marcos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Marcos.h; sourceTree = "<group>"; };
@@ -69,6 +73,8 @@
 		06E6834C1C3DF47A00EF0C94 /* AGNPhotosPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPhotosPickerController.m; sourceTree = "<group>"; };
 		06ED3DEB1C4246FC002B4849 /* UIView+SLAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SLAdditions.h"; sourceTree = "<group>"; };
 		06ED3DEC1C4246FC002B4849 /* UIView+SLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SLAdditions.m"; sourceTree = "<group>"; };
+		06FEE9171C4B9C6100A02C95 /* AGNPhotoPopAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPhotoPopAnimator.h; sourceTree = "<group>"; };
+		06FEE9181C4B9C6100A02C95 /* AGNPhotoPopAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPhotoPopAnimator.m; sourceTree = "<group>"; };
 		4811387E1C477EC5005BD239 /* AGNImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNImageScrollView.h; sourceTree = "<group>"; };
 		4811387F1C477EC5005BD239 /* AGNImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNImageScrollView.m; sourceTree = "<group>"; };
 		48304C811C48E1CB003C9DE3 /* ToSelectionInBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ToSelectionInBar@2x.png"; sourceTree = "<group>"; };
@@ -133,6 +139,10 @@
 				48AE60211C4652C100661556 /* AGNPageViewController.m */,
 				48AE602F1C46739700661556 /* AGNPhotoViewController.h */,
 				48AE60301C46739700661556 /* AGNPhotoViewController.m */,
+				06328FCE1C4B723C0031B1F7 /* AGNPhotoPushAnimator.h */,
+				06328FCF1C4B723C0031B1F7 /* AGNPhotoPushAnimator.m */,
+				06FEE9171C4B9C6100A02C95 /* AGNPhotoPopAnimator.h */,
+				06FEE9181C4B9C6100A02C95 /* AGNPhotoPopAnimator.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -285,6 +295,7 @@
 				0635954A1C40FB120094C7C5 /* AGNAlbumCell.m in Sources */,
 				481138801C477EC5005BD239 /* AGNImageScrollView.m in Sources */,
 				06ED3DED1C4246FC002B4849 /* UIView+SLAdditions.m in Sources */,
+				06FEE9191C4B9C6100A02C95 /* AGNPhotoPopAnimator.m in Sources */,
 				0637802F1C4203CB0027EA7C /* AGNPhotoCell.m in Sources */,
 				063595401C40D8C60094C7C5 /* UIViewController+SLAlert.m in Sources */,
 				063595361C40B7B80094C7C5 /* AGNAlbumsViewController.m in Sources */,
@@ -293,6 +304,7 @@
 				063595431C40E9340094C7C5 /* AGNAlbum.m in Sources */,
 				0635953F1C40D8C60094C7C5 /* UIAlertView+Blocks.m in Sources */,
 				48AE60221C4652C100661556 /* AGNPageViewController.m in Sources */,
+				06328FD01C4B723C0031B1F7 /* AGNPhotoPushAnimator.m in Sources */,
 				06E683281C3DED6500EF0C94 /* main.m in Sources */,
 				0637802B1C41FE570027EA7C /* AGNPhotosViewController.m in Sources */,
 				06E6834D1C3DF47A00EF0C94 /* AGNPhotosPickerController.m in Sources */,

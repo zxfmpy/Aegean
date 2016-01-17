@@ -51,11 +51,6 @@
         if (result) {
             self.lastViewController = fromVC;
         }
-    } else if ([toVC conformsToProtocol:@protocol(UINavigationControllerDelegate)] && [toVC respondsToSelector:selector]) {
-        result = [(id<UINavigationControllerDelegate>)toVC navigationController:navigationController animationControllerForOperation:operation fromViewController:fromVC toViewController:toVC];
-        if (result) {
-            self.lastViewController = toVC;
-        }
     }
     return result;
 }

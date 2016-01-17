@@ -13,8 +13,9 @@
 #import "UIView+SLAdditions.h"
 #import "AGNPageViewController.h"
 #import "Constants.h"
+#import "AGNPhotoPushAnimator.h"
 
-@interface AGNPhotosViewController ()
+@interface AGNPhotosViewController () <UINavigationControllerDelegate>
 @property (nonatomic, weak) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, weak) UIBarButtonItem *doneBarButtonItem;
 @property (nonatomic, weak) UIBarButtonItem *infoBarButtonItem;
@@ -137,6 +138,31 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     pageVC.selectedPhotosIndexes = self.selectedPhotosIndexes;
     pageVC.startingIndex = indexPath.row;
     [self.navigationController pushViewController:pageVC animated:YES];
+}
+
+#pragma mark <UINavigationControllerDelegate>
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC {
+    if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[AGNPageViewController class]]) {
+        AGNPhotoPushAnimator *animator = [[AGNPhotoPushAnimator alloc] init];
+        NSIndexPath *indexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
+        ALAsset *asset = (ALAsset *)[self.album.assets objectAtIndex:indexPath.row];
+        UIImage *image = [UIImage imageWithCGImage:[asset.defaultRepresentation fullResolutionImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+        imageView.clipsToBounds = YES;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        animator.imageView = imageView;
+        CGRect startRect = [self.collectionView cellForItemAtIndexPath:indexPath].frame;
+        startRect.origin = CGPointMake(startRect.origin.x - self.collectionView.contentOffset.x, startRect.origin.y - self.collectionView.contentOffset.y);
+        animator.startRect = startRect;
+        
+        CGFloat ratio = MIN(SCREEN_WIDTH / image.size.width, SCREEN_HEIGHT / image.size.height);
+        CGFloat width = ratio * image.size.width;
+        CGFloat height = ratio * image.size.height;
+        CGRect targetRect = CGRectMake((SCREEN_WIDTH - width) / 2.0, (SCREEN_HEIGHT - height) / 2.0, width, height);
+        animator.targetRect = targetRect;
+        return animator;
+    }
+    return nil;
 }
 
 #pragma mark - Action
