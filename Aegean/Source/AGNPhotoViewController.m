@@ -18,7 +18,7 @@
     AGNImageScrollView *imageScrollView = [[AGNImageScrollView alloc] init];
     imageScrollView.image = self.image;
     if ([self.parentViewController conformsToProtocol:@protocol(AGNImageScrollViewDelegate)]) {
-        imageScrollView.agnDelegate = (id<AGNImageScrollViewDelegate>)self.parentViewController;
+        imageScrollView.imageDelegate = (id<AGNImageScrollViewDelegate>)self.parentViewController;
     }
     
     self.view = imageScrollView;

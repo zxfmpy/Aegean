@@ -76,6 +76,11 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     [super viewWillDisappear:animated];
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self.navigationController setNavigationBarHidden:self.isFullScreen];
+    [self.navigationController setToolbarHidden:self.isFullScreen];
+}
+
 - (void)setCurrentIndex:(NSUInteger)currentIndex {
     NSString *title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex + 1, (long)self.album.assets.count];
     ALAsset *asset = [self.album.assets objectAtIndex:currentIndex];
@@ -233,8 +238,10 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     return UIStatusBarAnimationFade;
 }
 
-- (void)imageScrollView:(AGNImageScrollView *)imageScrollView didTap:(UITapGestureRecognizer *)tap {
+- (void)imageScrollView:(AGNImageScrollView *)imageScrollView didImageTapped:(UITapGestureRecognizer *)tap {
     self.isFullScreen = !self.isFullScreen;
+    [self.navigationController setNavigationBarHidden:NO];
+    [self.navigationController setToolbarHidden:NO];
     CGFloat alpha = (self.isFullScreen) ? 0.0 : 1.0;
     
     UIView *maskView = [[UIView alloc] initWithFrame:self.view.bounds];

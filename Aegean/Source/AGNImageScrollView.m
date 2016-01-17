@@ -73,8 +73,8 @@
 
 #pragma mark - Action
 - (void)singleTap:(UITapGestureRecognizer *)tap {
-    if ([self.agnDelegate respondsToSelector:@selector(imageScrollView:didTap:)]) {
-        [self.agnDelegate imageScrollView:self didTap:tap];
+    if ([self.imageDelegate respondsToSelector:@selector(imageScrollView:didImageTapped:)]) {
+        [self.imageDelegate imageScrollView:self didImageTapped:tap];
     }
 }
 

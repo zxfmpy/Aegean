@@ -10,10 +10,10 @@
 
 @class AGNImageScrollView;
 @protocol AGNImageScrollViewDelegate <NSObject>
-- (void)imageScrollView:(AGNImageScrollView *)imageScrollView didTap:(UITapGestureRecognizer *)tap;
+- (void)imageScrollView:(AGNImageScrollView *)imageScrollView didImageTapped:(UITapGestureRecognizer *)tap;
 @end
 
 @interface AGNImageScrollView : UIScrollView
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, weak) id<AGNImageScrollViewDelegate> agnDelegate;
+@property (nonatomic, weak) id<AGNImageScrollViewDelegate> imageDelegate;
 @end
