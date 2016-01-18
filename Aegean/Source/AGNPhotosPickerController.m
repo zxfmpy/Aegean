@@ -22,23 +22,24 @@
     if (self) {
         AGNAlbumsViewController *albumsVC = [[AGNAlbumsViewController alloc] init];
         self.viewControllers = @[albumsVC];
+        
+        self.delegate = self;
+        self.interactivePopGestureRecognizer.delegate = self;
+        
+        self.navigationBar.barTintColor = HEXCOLOR(0x343339);
+        self.navigationBar.tintColor = [UIColor whiteColor];
+        self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
+        self.navigationBar.barStyle = UIBarStyleBlack;
+        self.navigationBar.translucent = YES;
+        
+        self.toolbar.barTintColor = [UIColor whiteColor];
+        self.toolbar.translucent = YES;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.delegate = self;
-    self.interactivePopGestureRecognizer.delegate = self;
-    
-    self.navigationBar.barTintColor = HEXCOLOR(0x343339);
-    self.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-    self.navigationBar.barStyle = UIBarStyleBlack;
-    self.navigationBar.translucent = YES;
-    
-    self.toolbar.barTintColor = [UIColor whiteColor];
-    self.toolbar.translucent = YES;
 }
 
 #pragma mark <UINavigationControllerDelegate>

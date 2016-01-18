@@ -34,7 +34,10 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     self.selectedPhotosIndexes = [NSMutableArray array];
     
     self.title = self.album.name;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self.navigationController action:@selector(cancel:)];
+#pragma clang diagnostic pop
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self p_configureToolbar];
@@ -139,15 +142,11 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 }
 
 #pragma mark <AGNPageViewControllerDelegate>
-- (void)pageViewController:(AGNPageViewController *)pageViewController didSelectPhotoAtIndex:(NSUInteger)index {
+- (void)pageViewController:(AGNPageViewController *)pageViewController didSelectPhotosAtIndexes:(NSArray *)indexes {
     CGPoint contentOffset = self.collectionView.contentOffset;
-    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-    self.collectionView.contentOffset = contentOffset;
-}
-
-- (void)pageViewControllerDidResetPhotoSelections:(AGNPageViewController *)pageViewController {
-    CGPoint contentOffset = self.collectionView.contentOffset;
-    [self.collectionView reloadData];
+    for (NSNumber *indexNum in indexes) {
+        [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:[indexNum unsignedIntegerValue] inSection:0]]];
+    }
     self.collectionView.contentOffset = contentOffset;
 }
 

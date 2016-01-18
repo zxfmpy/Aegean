@@ -319,19 +319,20 @@
     self.resetBarButtonItem.enabled = (self.selectedPhotosIndexes.count > 0);
     self.infoBarButtonItem.title = self.selectedPhotosIndexes.count ? [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count] : nil;
     
-    if ([self.photoDelegate respondsToSelector:@selector(pageViewController:didSelectPhotoAtIndex:)]) {
-        [self.photoDelegate pageViewController:self didSelectPhotoAtIndex:currentIndex];
+    if ([self.photoDelegate respondsToSelector:@selector(pageViewController:didSelectPhotosAtIndexes:)]) {
+        [self.photoDelegate pageViewController:self didSelectPhotosAtIndexes:@[@(currentIndex)]];
     }
 }
 
 - (void)reset:(UIBarButtonItem *)sender {
+    NSArray *indexes = [self.selectedPhotosIndexes copy];
     [self.selectedPhotosIndexes removeAllObjects];
     self.resetBarButtonItem.enabled = NO;
     self.infoBarButtonItem.title = nil;
     self.doneBarButtonItem.enabled = NO;
     self.imageView.image = [UIImage imageNamed:@"ToSelectionInBar"];
-    if ([self.photoDelegate respondsToSelector:@selector(pageViewControllerDidResetPhotoSelections:)]) {
-        [self.photoDelegate pageViewControllerDidResetPhotoSelections:self];
+    if ([self.photoDelegate respondsToSelector:@selector(pageViewController:didSelectPhotosAtIndexes:)]) {
+        [self.photoDelegate pageViewController:self didSelectPhotosAtIndexes:indexes];
     }
 }
 

@@ -11,8 +11,7 @@
 
 @class AGNPageViewController;
 @protocol AGNPageViewControllerDelegate <NSObject>
-- (void)pageViewController:(AGNPageViewController *)pageViewController didSelectPhotoAtIndex:(NSUInteger)index;
-- (void)pageViewControllerDidResetPhotoSelections:(AGNPageViewController *)pageViewController;
+- (void)pageViewController:(AGNPageViewController *)pageViewController didSelectPhotosAtIndexes:(NSArray *)indexes;
 @end
 
 @interface AGNPageViewController : UIPageViewController
