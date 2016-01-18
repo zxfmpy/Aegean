@@ -31,7 +31,6 @@
     self.delegate = self;
     self.interactivePopGestureRecognizer.delegate = self;
     
-    // Appearance
     self.navigationBar.barTintColor = HEXCOLOR(0x343339);
     self.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
@@ -70,4 +69,15 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
+
+#pragma mark - Action
+- (void)cancel:(UIBarButtonItem *)sender {
+    AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
+    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
+        [picker.pickerDelegate photosPickerControllerDidCancel:picker];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    }
+}
+
 @end

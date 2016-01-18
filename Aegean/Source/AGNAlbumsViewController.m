@@ -7,11 +7,11 @@
 //
 
 #import "AGNAlbumsViewController.h"
-#import "AGNPhotosPickerController.h"
 #import "AGNPhotosViewController.h"
-#import "UIViewController+SLAlert.h"
 #import "AGNAlbumCell.h"
+
 #import "Constants.h"
+#import "UIViewController+SLAlert.h"
 
 @interface AGNAlbumsViewController ()
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
@@ -29,7 +29,10 @@ static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
     self.albums = [NSMutableArray array];
     self.assetsLibrary = [[ALAssetsLibrary alloc] init];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self.navigationController action:@selector(cancel:)];
+#pragma clang diagnostic pop
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.rowHeight = 90;
@@ -138,15 +141,5 @@ static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
     AGNPhotosViewController *photosVC = [[AGNPhotosViewController alloc] initWithCollectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     photosVC.album = [self.albums objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:photosVC animated:YES];
-}
-
-#pragma mark - Action
-- (void)cancel:(UIBarButtonItem *)sender {
-    AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
-    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
-        [picker.pickerDelegate photosPickerControllerDidCancel:picker];
-    } else {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-    }
 }
 @end

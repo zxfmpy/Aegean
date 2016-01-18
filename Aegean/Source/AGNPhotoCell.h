@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface AGNPhotoCell : UICollectionViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIButton *selectionButton;
 @property (weak, nonatomic) IBOutlet UIImageView *selectionImageView;
 - (void)setImage:(UIImage *)image;

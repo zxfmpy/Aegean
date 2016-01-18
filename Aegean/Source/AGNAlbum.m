@@ -9,6 +9,10 @@
 #import "AGNAlbum.h"
 #import <objc/runtime.h>
 
+@interface AGNAlbum ()
+@property (nonatomic, strong) NSMutableArray *aspectRatioThumbnails;
+@end
+
 @implementation AGNAlbum
 - (instancetype)init
 {
@@ -66,4 +70,22 @@
     }
 }
 
+- (UIImage *)fullResolutionImageAtIndex:(NSUInteger)index {
+    UIImage *image = nil;
+    if (index < self.assets.count) {
+        ALAsset *asset = [self.assets objectAtIndex:index];
+        image = [[UIImage alloc] initWithCGImage:asset.defaultRepresentation.fullResolutionImage scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+    }
+    return image;
+}
+
+- (UIImage *)aspectRatioThumbnailAtIndex:(NSUInteger)index {
+    UIImage *thumbnail = nil;
+    if (index < self.aspectRatioThumbnails.count) {
+        thumbnail = [self.aspectRatioThumbnails objectAtIndex:index];
+    } else if (index < self.assets.count) {
+        thumbnail = [UIImage imageWithCGImage:((ALAsset *)[self.assets objectAtIndex:index]).aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+    }
+    return thumbnail;
+}
 @end

@@ -16,4 +16,5 @@
 
 @interface AGNPhotosPickerController : UINavigationController
 @property (nonatomic, weak) id<AGNPhotosPickerControllerDelegate> pickerDelegate;
+- (void)cancel:(UIBarButtonItem *)sender;
 @end

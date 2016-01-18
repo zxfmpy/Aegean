@@ -8,23 +8,25 @@
 
 #import "AGNPhotosViewController.h"
 #import "AGNPhotosPickerController.h"
-#import "AGNPhotoCell.h"
-#import "Marcos.h"
-#import "UIView+SLAdditions.h"
 #import "AGNPageViewController.h"
-#import "Constants.h"
 #import "AGNPhotoPushAnimator.h"
+#import "AGNPhotoCell.h"
 
-@interface AGNPhotosViewController () <UINavigationControllerDelegate>
+#import "Marcos.h"
+#import "Constants.h"
+#import "UIView+SLAdditions.h"
+
+@interface AGNPhotosViewController () <UINavigationControllerDelegate, AGNPageViewControllerDelegate, AGNPhotoTransitioning>
 @property (nonatomic, weak) UIBarButtonItem *previewBarButtonItem;
-@property (nonatomic, weak) UIBarButtonItem *doneBarButtonItem;
 @property (nonatomic, weak) UIBarButtonItem *infoBarButtonItem;
+@property (nonatomic, weak) UIBarButtonItem *doneBarButtonItem;
 
 @property (nonatomic, strong) NSMutableArray *selectedPhotosIndexes;
 @end
 
 @implementation AGNPhotosViewController
 
+static const CGFloat kSpacing = 3;
 static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 - (void)viewDidLoad {
@@ -32,18 +34,17 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     self.selectedPhotosIndexes = [NSMutableArray array];
     
     self.title = self.album.name;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self.navigationController action:@selector(cancel:)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    [self p_configureToolBar];
+    [self p_configureToolbar];
     
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    CGFloat spacing = 3;
-    layout.minimumInteritemSpacing = spacing;
-    layout.minimumLineSpacing = spacing;
-    CGFloat side = (MIN(SCREEN_WIDTH, SCREEN_HEIGHT) - spacing * 3) / 4;
+    layout.minimumInteritemSpacing = kSpacing;
+    layout.minimumLineSpacing = kSpacing;
+    CGFloat side = (MIN(SCREEN_WIDTH, SCREEN_HEIGHT) - kSpacing * 3) / 4;
     layout.itemSize = CGSizeMake(side, side);
-    self.collectionView.contentInset = UIEdgeInsetsMake(spacing, 0, spacing, 0);
+    self.collectionView.contentInset = UIEdgeInsetsMake(kSpacing, 0, kSpacing, 0);
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.alwaysBounceVertical = YES;
     [self.collectionView registerNib:[UINib nibWithNibName:@"AGNPhotoCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:kPhotoCellReuseIdentifier];
@@ -51,23 +52,12 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (self.isMovingToParentViewController) {
-        self.navigationController.toolbarHidden = NO;
-    }
-    if (self.selectedPhotosIndexes.count) {
-        self.previewBarButtonItem.enabled = YES;
-        self.doneBarButtonItem.enabled = YES;
-        self.infoBarButtonItem.title = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
-    } else {
-        self.previewBarButtonItem.enabled = NO;
-        self.doneBarButtonItem.enabled = NO;
-        self.infoBarButtonItem.title = nil;
-    }
-    [self.collectionView reloadData];
+    self.navigationController.toolbarHidden = NO;
+    [self p_refreshToolbarButtonItems];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    if (self.isMovingFromParentViewController) {
+    if (self.isMovingFromParentViewController) { // Carefully
         self.navigationController.toolbarHidden = YES;
     }
     [super viewWillDisappear:animated];
@@ -79,7 +69,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 }
 
 #pragma mark - Private
-- (void)p_configureToolBar {
+- (void)p_configureToolbar {
     UIBarButtonItem *flexibleSpaceBarButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *flexibleSpaceBarButton2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
@@ -96,8 +86,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     [doneBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *fixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedSpacer.width = 57 - 40;
-    
+    fixedSpacer.width = 57 - 40; // hard-coded
     self.toolbarItems = @[previewBarButtonItem, flexibleSpaceBarButton1, infoBarButtonItem,flexibleSpaceBarButton2, fixedSpacer, doneBarButtonItem];
     
     self.previewBarButtonItem = previewBarButtonItem;
@@ -105,6 +94,18 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     self.doneBarButtonItem = doneBarButtonItem;
     self.previewBarButtonItem.enabled = NO;
     self.doneBarButtonItem.enabled = NO;
+}
+
+- (void)p_refreshToolbarButtonItems {
+    if (self.selectedPhotosIndexes.count) {
+        self.previewBarButtonItem.enabled = YES;
+        self.doneBarButtonItem.enabled = YES;
+        self.infoBarButtonItem.title = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
+    } else {
+        self.previewBarButtonItem.enabled = NO;
+        self.doneBarButtonItem.enabled = NO;
+        self.infoBarButtonItem.title = nil;
+    }
 }
 
 #pragma mark - Protocol
@@ -120,11 +121,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     AGNPhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kPhotoCellReuseIdentifier forIndexPath:indexPath];
     NSUInteger index = indexPath.row;
-    if (index < self.album.aspectRatioThumbnails.count) {
-        [cell setImage:[self.album.aspectRatioThumbnails objectAtIndex:index]];
-    } else {
-        [cell setImage:[UIImage imageWithCGImage:((ALAsset *)[self.album.assets objectAtIndex:index]).aspectRatioThumbnail scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp]];
-    }
+    [cell setImage:[self.album aspectRatioThumbnailAtIndex:index]];
     cell.selectionImageView.image = [self.selectedPhotosIndexes containsObject:@(index)] ? [UIImage imageNamed:@"Selection"] : [UIImage imageNamed:@"ToSelection"];
     cell.selectionButton.tag = index;
     [cell.selectionButton addTarget:self action:@selector(selectPhoto:) forControlEvents:UIControlEventTouchUpInside];
@@ -137,44 +134,79 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     pageVC.album = self.album;
     pageVC.selectedPhotosIndexes = self.selectedPhotosIndexes;
     pageVC.startingIndex = indexPath.row;
+    pageVC.photoDelegate = self;
     [self.navigationController pushViewController:pageVC animated:YES];
+}
+
+#pragma mark <AGNPageViewControllerDelegate>
+- (void)pageViewController:(AGNPageViewController *)pageViewController didSelectPhotoAtIndex:(NSUInteger)index {
+    CGPoint contentOffset = self.collectionView.contentOffset;
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+    self.collectionView.contentOffset = contentOffset;
+}
+
+- (void)pageViewControllerDidResetPhotoSelections:(AGNPageViewController *)pageViewController {
+    CGPoint contentOffset = self.collectionView.contentOffset;
+    [self.collectionView reloadData];
+    self.collectionView.contentOffset = contentOffset;
 }
 
 #pragma mark <UINavigationControllerDelegate>
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC {
-    if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[AGNPageViewController class]]) {
+    if (operation == UINavigationControllerOperationPush && [toVC conformsToProtocol:@protocol(AGNPhotoTransitioning)]) {
         AGNPhotoPushAnimator *animator = [[AGNPhotoPushAnimator alloc] init];
         NSIndexPath *indexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
-        ALAsset *asset = (ALAsset *)[self.album.assets objectAtIndex:indexPath.row];
-        UIImage *image = [UIImage imageWithCGImage:[asset.defaultRepresentation fullResolutionImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        imageView.clipsToBounds = YES;
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
-        animator.imageView = imageView;
-        CGRect startRect = [self.collectionView cellForItemAtIndexPath:indexPath].frame;
+        AGNPhotoCell *cell = (AGNPhotoCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        animator.fromImageView = cell.imageView;
+        
+        animator.photo = [self.album fullResolutionImageAtIndex:indexPath.row];
+        CGRect startRect = cell.frame;
         startRect.origin = CGPointMake(startRect.origin.x - self.collectionView.contentOffset.x, startRect.origin.y - self.collectionView.contentOffset.y);
         animator.startRect = startRect;
-        
-        CGFloat ratio = MIN(SCREEN_WIDTH / image.size.width, SCREEN_HEIGHT / image.size.height);
-        CGFloat width = ratio * image.size.width;
-        CGFloat height = ratio * image.size.height;
-        CGRect targetRect = CGRectMake((SCREEN_WIDTH - width) / 2.0, (SCREEN_HEIGHT - height) / 2.0, width, height);
-        animator.targetRect = targetRect;
         return animator;
     }
     return nil;
 }
 
-#pragma mark - Action
-- (void)cancel:(UIBarButtonItem *)sender {
-    AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
-    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerControllerDidCancel:)]) {
-        [picker.pickerDelegate photosPickerControllerDidCancel:picker];
-    } else {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+#pragma mark <AGNPhotoTransitioning>
+- (CGRect)targetRectWhenPoppingAtIndex:(NSUInteger)index {
+    UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    CGRect targetRect = attributes.frame;
+    
+    NSMutableArray *indexes = [NSMutableArray array];
+    for (UICollectionViewCell *cell in self.collectionView.visibleCells) {
+        CGFloat top = cell.frame.origin.y - self.collectionView.contentOffset.y;
+        CGFloat bottom = top + cell.height;
+        if (top >= self.navigationController.navigationBar.height + [UIApplication sharedApplication].statusBarFrame.size.height && bottom <= self.collectionView.height - self.navigationController.toolbar.height) {
+            [indexes addObject:@([self.collectionView indexPathForCell:cell].row)];
+        }
     }
+    [indexes sortUsingSelector:@selector(compare:)];
+    if (index < [[indexes firstObject] unsignedIntegerValue]) {
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+    } else if (index > [[indexes lastObject] unsignedIntegerValue]) {
+        CGPoint contentOffset = self.collectionView.contentOffset;
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+        if (self.collectionView.contentOffset.y <= contentOffset.y) {
+            contentOffset.y = attributes.frame.origin.y + attributes.frame.size.height + kSpacing - (self.collectionView.height - self.navigationController.toolbar.height);
+            self.collectionView.contentOffset = contentOffset;
+        }
+    }
+    
+    targetRect.origin.x = targetRect.origin.x - self.collectionView.contentOffset.x;
+    targetRect.origin.y = targetRect.origin.y - self.collectionView.contentOffset.y;
+    return targetRect;
 }
 
+- (UIImageView *)targetImageViewWhenPoppingAtIndex:(NSUInteger)index {
+    AGNPhotoCell *cell = (AGNPhotoCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    if (cell) {
+        return cell.imageView;
+    }
+    return nil;
+}
+
+#pragma mark - Action
 - (void)preview:(UIBarButtonItem *)sender {
 #warning
 }
@@ -185,9 +217,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
         NSMutableArray *photos = [NSMutableArray array];
         for (NSNumber *indexNumber in self.selectedPhotosIndexes) {
             NSUInteger index = [indexNumber unsignedIntegerValue];
-            ALAsset *asset = [self.album.assets objectAtIndex:index];
-            ALAssetRepresentation *representation = asset.defaultRepresentation;
-            UIImage *image = [[UIImage alloc] initWithCGImage:representation.fullResolutionImage scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+            UIImage *image = [self.album fullResolutionImageAtIndex:index];
             [photos addObject:image];
         }
         [picker.pickerDelegate photosPickerController:picker didFinishPickingPhotos:[photos copy]];
@@ -219,14 +249,6 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
         }];
     }
     
-    if (self.selectedPhotosIndexes.count) {
-        self.previewBarButtonItem.enabled = YES;
-        self.doneBarButtonItem.enabled = YES;
-        self.infoBarButtonItem.title = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
-    } else {
-        self.previewBarButtonItem.enabled = NO;
-        self.doneBarButtonItem.enabled = NO;
-        self.infoBarButtonItem.title = nil;
-    }
+    [self p_refreshToolbarButtonItems];
 }
 @end

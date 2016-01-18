@@ -9,7 +9,6 @@
 #import "AGNPhotoCell.h"
 
 @interface AGNPhotoCell ()
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) UIView *maskView;
 @end
 

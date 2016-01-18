@@ -9,7 +9,6 @@
 #import "AGNImageScrollView.h"
 
 @interface AGNImageScrollView () <UIScrollViewDelegate>
-@property (nonatomic, weak) UIImageView *imageView;
 @end
 
 @implementation AGNImageScrollView
@@ -79,8 +78,8 @@
 }
 
 - (void)doubleTap:(UITapGestureRecognizer *)tap {
-    CGPoint center = [tap locationInView:self];
-    if (!CGRectContainsPoint(self.imageView.frame, center)) {
+    CGPoint touchPoint = [tap locationInView:self];
+    if (!CGRectContainsPoint(self.imageView.frame, touchPoint)) {
         [self singleTap:tap];
         return;
     }
@@ -88,8 +87,8 @@
     CGRect zoomRect;
     zoomRect.size.height = [self frame].size.height / scale;
     zoomRect.size.width  = [self frame].size.width  / scale;
-    zoomRect.origin.x    = center.x - ((zoomRect.size.width / 2.0));
-    zoomRect.origin.y    = center.y - ((zoomRect.size.height / 2.0));
+    zoomRect.origin.x    = touchPoint.x - ((zoomRect.size.width / 2.0));
+    zoomRect.origin.y    = touchPoint.y - ((zoomRect.size.height / 2.0));
     
     [self zoomToRect:zoomRect animated:YES];
 }

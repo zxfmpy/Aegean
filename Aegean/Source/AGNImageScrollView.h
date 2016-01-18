@@ -14,6 +14,7 @@
 @end
 
 @interface AGNImageScrollView : UIScrollView
-@property (nonatomic, strong) UIImage *image;
+@property (nonatomic) UIImage *image;
+@property (nonatomic, weak) UIImageView *imageView;
 @property (nonatomic, weak) id<AGNImageScrollViewDelegate> imageDelegate;
 @end

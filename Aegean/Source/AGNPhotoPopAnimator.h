@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "AGNPhotoTransitioning.h"
 
 @interface AGNPhotoPopAnimator : NSObject <UIViewControllerAnimatedTransitioning>
+@property (nonatomic, weak) UIImageView *fromImageView;
+@property (nonatomic, assign) NSUInteger index;
 @end

@@ -7,66 +7,63 @@
 //
 
 #import "AGNPageViewController.h"
-#import "AGNPhotoViewController.h"
 #import "AGNPhotosPickerController.h"
-#import "Marcos.h"
-#import "UIView+SLAdditions.h"
-#import "Constants.h"
+#import "AGNPhotoViewController.h"
+#import "AGNPhotoPopAnimator.h"
 
-@interface AGNPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, AGNImageScrollViewDelegate>
+#import "Marcos.h"
+#import "Constants.h"
+#import "UIView+SLAdditions.h"
+
+@interface AGNPageViewController () <UINavigationControllerDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate, AGNImageScrollViewDelegate, AGNPhotoTransitioning>
 @property (nonatomic, weak) UILabel *titleLabel;
 @property (nonatomic, weak) UILabel *dateLabel;
 @property (nonatomic, weak) UIImageView *imageView;
 @property (nonatomic, weak) UIBarButtonItem *doneBarButtonItem;
-@property (nonatomic, weak) UIBarButtonItem *resetBarButtonItem;
 @property (nonatomic, weak) UIBarButtonItem *infoBarButtonItem;
+@property (nonatomic, weak) UIBarButtonItem *resetBarButtonItem;
 
-@property (nonatomic, assign) NSUInteger pendingCurrentIndex;
 @property (nonatomic, assign) BOOL isFullScreen;
+@property (nonatomic, assign) NSUInteger pendingCurrentIndex;
 @property (nonatomic, strong) AGNPhotoViewController *photoVCBeforeStarting;
 @property (nonatomic, strong) AGNPhotoViewController *photoVCAfterStarting;
 @end
 
 @implementation AGNPageViewController
-
-static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.view.backgroundColor = HEXCOLOR(kViewBackgroundColorDecimal);
-    [self p_configureNavigationItem];
-    [self p_configureToolBar];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self p_configureTitleView];
+    [self p_configureNavigationItem];
+    [self p_configureToolbar];
     [self setCurrentIndex:self.startingIndex];
     
     self.dataSource = self;
     self.delegate = self;
     AGNPhotoViewController *photoVC = [[AGNPhotoViewController alloc] init];
     photoVC.pageIndex = self.startingIndex;
-    photoVC.image = [UIImage imageWithCGImage:[[(ALAsset *)[self.album.assets objectAtIndex:self.startingIndex] defaultRepresentation] fullResolutionImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+    photoVC.image = [self.album fullResolutionImageAtIndex:self.startingIndex];
     [self setViewControllers:@[photoVC] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:NULL];
     
     // To avoid a little delay at the first time switching
     if (self.startingIndex > 0) {
         self.photoVCBeforeStarting = [[AGNPhotoViewController alloc] init];
         self.photoVCBeforeStarting.pageIndex = self.startingIndex - 1;
-        self.photoVCBeforeStarting.image = [UIImage imageWithCGImage:[[(ALAsset *)[self.album.assets objectAtIndex:self.startingIndex - 1] defaultRepresentation] fullResolutionImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+        self.photoVCBeforeStarting.image = [self.album fullResolutionImageAtIndex:self.startingIndex - 1];
     }
     if (self.startingIndex < self.album.assets.count - 1) {
         self.photoVCAfterStarting = [[AGNPhotoViewController alloc] init];
         self.photoVCAfterStarting.pageIndex = self.startingIndex + 1;
-        self.photoVCAfterStarting.image = [UIImage imageWithCGImage:[[(ALAsset *)[self.album.assets objectAtIndex:self.startingIndex + 1] defaultRepresentation] fullResolutionImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+        self.photoVCAfterStarting.image = [self.album fullResolutionImageAtIndex:self.startingIndex + 1];
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.isMovingToParentViewController) {
-        self.navigationController.toolbarHidden = NO;
-    }
+    self.navigationController.toolbarHidden = NO;
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }
 
@@ -115,7 +112,7 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     self.navigationItem.rightBarButtonItems = @[negativeSeparator, [[UIBarButtonItem alloc] initWithCustomView:button]];
 }
 
-- (void)p_configureToolBar {
+- (void)p_configureToolbar {
     UIBarButtonItem *flexibleSpaceBarButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *flexibleSpaceBarButton2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
@@ -133,7 +130,6 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     
     UIBarButtonItem *fixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     fixedSpacer.width = 43.5 - 40;
-    
     self.toolbarItems = @[resetBarButtonItem, flexibleSpaceBarButton1, infoBarButtonItem, flexibleSpaceBarButton2, fixedSpacer, doneBarButtonItem];
     
     self.resetBarButtonItem = resetBarButtonItem;
@@ -181,6 +177,28 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
 }
 
 #pragma mark - Protocol
+#pragma mark <UINavigationControllerDelegate>
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC {
+    if (operation == UINavigationControllerOperationPop && [toVC conformsToProtocol:@protocol(AGNPhotoTransitioning)]) {
+        AGNPhotoPopAnimator *animator = [[AGNPhotoPopAnimator alloc] init];
+        
+        AGNPhotoViewController *photoVC = [self.viewControllers lastObject];
+        animator.index = photoVC.pageIndex;
+        animator.fromImageView = [(AGNImageScrollView *)photoVC.view imageView];
+        return animator;
+    }
+    return nil;
+}
+
+#pragma mark <AGNPhotoTransitioning>
+- (UIImageView *)targetImageViewWhenPushing {
+    AGNPhotoViewController *photoVC = [self.viewControllers lastObject];
+    if ([photoVC.view isKindOfClass:[AGNImageScrollView class]]) {
+        return [(AGNImageScrollView *)photoVC.view imageView];
+    }
+    return nil;
+}
+
 #pragma mark <UIPageViewControllerDataSource>
 - (UIViewController *)pageViewController:(UIPageViewController *)pvc viewControllerBeforeViewController:(AGNPhotoViewController *)vc
 {
@@ -193,7 +211,7 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
         } else {
             photoVC = [[AGNPhotoViewController alloc] init];
             photoVC.pageIndex = currentIndex;
-            photoVC.image = [UIImage imageWithCGImage:[[(ALAsset *)[self.album.assets objectAtIndex:currentIndex] defaultRepresentation] fullResolutionImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+            photoVC.image = [self.album fullResolutionImageAtIndex:currentIndex];
         }
         return photoVC;
     }
@@ -211,8 +229,7 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
         } else {
             photoVC = [[AGNPhotoViewController alloc] init];
             photoVC.pageIndex = currentIndex;
-            UIImage *image = [UIImage imageWithCGImage:[[(ALAsset *)[self.album.assets objectAtIndex:currentIndex] defaultRepresentation] fullResolutionImage] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
-            photoVC.image = image;
+            photoVC.image = [self.album fullResolutionImageAtIndex:currentIndex];
         }
         return photoVC;
     }
@@ -241,13 +258,14 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
 }
 
 - (void)imageScrollView:(AGNImageScrollView *)imageScrollView didImageTapped:(UITapGestureRecognizer *)tap {
-    self.isFullScreen = !self.isFullScreen;
     [self.navigationController setNavigationBarHidden:NO];
     [self.navigationController setToolbarHidden:NO];
+    
+    self.isFullScreen = !self.isFullScreen;
     CGFloat alpha = (self.isFullScreen) ? 0.0 : 1.0;
     
     UIView *maskView = [[UIView alloc] initWithFrame:self.view.bounds];
-    maskView.backgroundColor = self.isFullScreen ? [UIColor blackColor] : HEXCOLOR(kViewBackgroundColorDecimal);
+    maskView.backgroundColor = self.isFullScreen ? [UIColor blackColor] : [UIColor whiteColor];
     maskView.alpha = 0.0;
     [self.view insertSubview:maskView atIndex:0];
     
@@ -259,7 +277,7 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
         maskView.alpha = 1.0;
     } completion:^(BOOL finished) {
         [maskView removeFromSuperview];
-        self.view.backgroundColor = self.isFullScreen ? [UIColor blackColor] : HEXCOLOR(kViewBackgroundColorDecimal);
+        self.view.backgroundColor = self.isFullScreen ? [UIColor blackColor] : [UIColor whiteColor];
     }];
     
     self.navigationController.navigationBar.frame = CGRectZero;
@@ -299,24 +317,10 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     }
     self.doneBarButtonItem.enabled = (self.selectedPhotosIndexes.count > 0);
     self.resetBarButtonItem.enabled = (self.selectedPhotosIndexes.count > 0);
-    
     self.infoBarButtonItem.title = self.selectedPhotosIndexes.count ? [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count] : nil;
-}
-
-- (void)done:(UIBarButtonItem *)sender {
-    AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
-    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerController:didFinishPickingPhotos:)]) {
-        NSMutableArray *photos = [NSMutableArray array];
-        for (NSNumber *indexNumber in self.selectedPhotosIndexes) {
-            NSUInteger index = [indexNumber unsignedIntegerValue];
-            ALAsset *asset = [self.album.assets objectAtIndex:index];
-            ALAssetRepresentation *representation = asset.defaultRepresentation;
-            UIImage *image = [[UIImage alloc] initWithCGImage:representation.fullResolutionImage scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
-            [photos addObject:image];
-        }
-        [picker.pickerDelegate photosPickerController:picker didFinishPickingPhotos:[photos copy]];
-    } else {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    
+    if ([self.photoDelegate respondsToSelector:@selector(pageViewController:didSelectPhotoAtIndex:)]) {
+        [self.photoDelegate pageViewController:self didSelectPhotoAtIndex:currentIndex];
     }
 }
 
@@ -326,5 +330,23 @@ static const NSInteger kViewBackgroundColorDecimal = 0xFFFFFF;
     self.infoBarButtonItem.title = nil;
     self.doneBarButtonItem.enabled = NO;
     self.imageView.image = [UIImage imageNamed:@"ToSelectionInBar"];
+    if ([self.photoDelegate respondsToSelector:@selector(pageViewControllerDidResetPhotoSelections:)]) {
+        [self.photoDelegate pageViewControllerDidResetPhotoSelections:self];
+    }
+}
+
+- (void)done:(UIBarButtonItem *)sender {
+    AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
+    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerController:didFinishPickingPhotos:)]) {
+        NSMutableArray *photos = [NSMutableArray array];
+        for (NSNumber *indexNumber in self.selectedPhotosIndexes) {
+            NSUInteger index = [indexNumber unsignedIntegerValue];
+            UIImage *image = [self.album fullResolutionImageAtIndex:index];
+            [photos addObject:image];
+        }
+        [picker.pickerDelegate photosPickerController:picker didFinishPickingPhotos:[photos copy]];
+    } else {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    }
 }
 @end

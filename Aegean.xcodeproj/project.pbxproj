@@ -84,6 +84,7 @@
 		48AE602D1C46612800661556 /* SelectionInBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SelectionInBar@2x.png"; sourceTree = "<group>"; };
 		48AE602F1C46739700661556 /* AGNPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPhotoViewController.h; sourceTree = "<group>"; };
 		48AE60301C46739700661556 /* AGNPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGNPhotoViewController.m; sourceTree = "<group>"; };
+		48AFD3961C4C828B002FFDD1 /* AGNPhotoTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGNPhotoTransitioning.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +144,7 @@
 				06328FCF1C4B723C0031B1F7 /* AGNPhotoPushAnimator.m */,
 				06FEE9171C4B9C6100A02C95 /* AGNPhotoPopAnimator.h */,
 				06FEE9181C4B9C6100A02C95 /* AGNPhotoPopAnimator.m */,
+				48AFD3961C4C828B002FFDD1 /* AGNPhotoTransitioning.h */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -165,8 +167,8 @@
 		06E6831A1C3DED6500EF0C94 = {
 			isa = PBXGroup;
 			children = (
-				063595381C40BF2C0094C7C5 /* AssetsLibrary.framework */,
 				06E683251C3DED6500EF0C94 /* Aegean */,
+				063595381C40BF2C0094C7C5 /* AssetsLibrary.framework */,
 				06E683241C3DED6500EF0C94 /* Products */,
 			);
 			sourceTree = "<group>";

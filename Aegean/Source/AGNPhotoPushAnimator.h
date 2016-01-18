@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "AGNPhotoTransitioning.h"
 
 @interface AGNPhotoPushAnimator : NSObject <UIViewControllerAnimatedTransitioning>
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, weak) UIImageView *fromImageView;
+@property (nonatomic, strong) UIImage *photo;
 @property (nonatomic, assign) CGRect startRect;
-@property (nonatomic, assign) CGRect targetRect;
 @end

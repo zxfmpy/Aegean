@@ -74,25 +74,13 @@
     
     NSInteger index = album.assets.count;
     if (--index >= 0) {
-        if (index < album.aspectRatioThumbnails.count) {
-            self.imageView1.image = [album.aspectRatioThumbnails objectAtIndex:index];
-        } else {
-            self.imageView1.image = [UIImage imageWithCGImage: [(ALAsset *)[album.assets objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
-        }
+        self.imageView1.image = [album aspectRatioThumbnailAtIndex:index];
     }
     if (--index >= 0) {
-        if (index < album.aspectRatioThumbnails.count) {
-            self.imageView2.image = [album.aspectRatioThumbnails objectAtIndex:index];
-        } else {
-            self.imageView2.image = [UIImage imageWithCGImage: [(ALAsset *)[album.assets objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
-        }
+        self.imageView2.image = [album aspectRatioThumbnailAtIndex:index];
     }
     if (--index >= 0) {
-        if (index < album.aspectRatioThumbnails.count) {
-            self.imageView3.image = [album.aspectRatioThumbnails objectAtIndex:index];
-        } else {
-            self.imageView3.image = [UIImage imageWithCGImage: [(ALAsset *)[album.assets objectAtIndex:index] aspectRatioThumbnail] scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
-        }
+        self.imageView3.image = [album aspectRatioThumbnailAtIndex:index];
     }
 }
 @end
