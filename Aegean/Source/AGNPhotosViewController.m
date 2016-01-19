@@ -16,12 +16,19 @@
 #import "Constants.h"
 #import "UIView+SLAdditions.h"
 
+#define COLOR_PART_RED(color)    (((color) >> 16) & 0xff)
+#define COLOR_PART_GREEN(color)  (((color) >>  8) & 0xff)
+#define COLOR_PART_BLUE(color)   ( (color)        & 0xff)
+
 @interface AGNPhotosViewController () <UINavigationControllerDelegate, AGNPageViewControllerDelegate, AGNPhotoTransitioning>
 @property (nonatomic, weak) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, weak) UIBarButtonItem *infoBarButtonItem;
 @property (nonatomic, weak) UIBarButtonItem *doneBarButtonItem;
 
 @property (nonatomic, strong) NSMutableArray *selectedPhotosIndexes;
+@property (nonatomic, strong) UIImage *selectionImage;
+@property (nonatomic, strong) UIImage *toSelectionImage;
+@property (nonatomic, strong) UIColor *tintColor;
 @end
 
 @implementation AGNPhotosViewController
@@ -32,6 +39,9 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.selectedPhotosIndexes = [NSMutableArray array];
+    self.tintColor = [(AGNPhotosPickerController *)self.navigationController tintColor];
+    self.selectionImage = [UIImage imageNamed:@"Selection"];
+    self.toSelectionImage = [UIImage imageNamed:@"ToSelection"];
     
     self.title = self.album.name;
 #pragma clang diagnostic push
@@ -85,7 +95,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     [infoBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done:)];
-    doneBarButtonItem.tintColor = HEXCOLOR(0x08BB08);
+    doneBarButtonItem.tintColor = self.tintColor;
     [doneBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *fixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -125,7 +135,13 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     AGNPhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kPhotoCellReuseIdentifier forIndexPath:indexPath];
     NSUInteger index = indexPath.row;
     [cell setImage:[self.album aspectRatioThumbnailAtIndex:index]];
-    cell.selectionImageView.image = [self.selectedPhotosIndexes containsObject:@(index)] ? [UIImage imageNamed:@"Selection"] : [UIImage imageNamed:@"ToSelection"];
+    if ([self.selectedPhotosIndexes containsObject:@(index)]) {
+        cell.selectionImageView.image = self.selectionImage;
+        cell.selectionImageView.backgroundColor = self.tintColor;
+    } else {
+        cell.selectionImageView.image = self.toSelectionImage;
+        cell.selectionImageView.backgroundColor = [UIColor clearColor];
+    }
     cell.selectionButton.tag = index;
     [cell.selectionButton addTarget:self action:@selector(selectPhoto:) forControlEvents:UIControlEventTouchUpInside];
     return cell;
@@ -230,10 +246,12 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     AGNPhotoCell *cell = (AGNPhotoCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     if ([self.selectedPhotosIndexes containsObject:@(index)]) {
         [self.selectedPhotosIndexes removeObject:@(index)];
-        cell.selectionImageView.image = [UIImage imageNamed:@"ToSelection"];
+        cell.selectionImageView.image = self.toSelectionImage;
+        cell.selectionImageView.backgroundColor = [UIColor clearColor];
     } else {
         [self.selectedPhotosIndexes addObject:@(index)];
-        cell.selectionImageView.image = [UIImage imageNamed:@"Selection"];
+        cell.selectionImageView.image = self.selectionImage;
+        cell.selectionImageView.backgroundColor = self.tintColor;
         cell.selectionImageView.transform = CGAffineTransformMakeScale(0.5, 0.5);
         [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             cell.selectionImageView.transform = CGAffineTransformMakeScale(1.1, 1.1);

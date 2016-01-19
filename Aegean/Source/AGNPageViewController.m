@@ -14,6 +14,7 @@
 #import "Marcos.h"
 #import "Constants.h"
 #import "UIView+SLAdditions.h"
+#import "UIViewController+SLAlert.h"
 
 @interface AGNPageViewController () <UINavigationControllerDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate, AGNImageScrollViewDelegate, AGNPhotoTransitioning>
 @property (nonatomic, weak) UILabel *titleLabel;
@@ -27,6 +28,10 @@
 @property (nonatomic, assign) NSUInteger pendingCurrentIndex;
 @property (nonatomic, strong) AGNPhotoViewController *photoVCBeforeStarting;
 @property (nonatomic, strong) AGNPhotoViewController *photoVCAfterStarting;
+
+@property (nonatomic, strong) UIColor *tintColor;
+@property (nonatomic, strong) UIImage *toSelectionImage;
+@property (nonatomic, strong) UIImage *selectionImage;
 @end
 
 @implementation AGNPageViewController
@@ -36,6 +41,10 @@
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
+    self.tintColor = [(AGNPhotosPickerController *)self.navigationController tintColor];
+    self.toSelectionImage = [UIImage imageNamed:@"ToSelectionInBar"];
+    self.selectionImage = [UIImage imageNamed:@"SelectionInBar"];
+    
     [self p_configureTitleView];
     [self p_configureNavigationItem];
     [self p_configureToolbar];
@@ -87,19 +96,23 @@
     [self p_setTitle:title date:date];
     
     if ([self.selectedPhotosIndexes containsObject:@(currentIndex)]) {
-        self.imageView.image = [UIImage imageNamed:@"SelectionInBar"];
+        self.imageView.image = self.selectionImage;
+        self.imageView.backgroundColor = self.tintColor;
     } else {
-        self.imageView.image = [UIImage imageNamed:@"ToSelectionInBar"];
+        self.imageView.image = [self.toSelectionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.imageView.backgroundColor = [UIColor clearColor];
     }
 }
 
 #pragma mark - Private
 - (void)p_configureNavigationItem {
-    UIImage *placeholderImage = [UIImage imageNamed:@"ToSelectionInBar"];
+    UIImage *placeholderImage = self.toSelectionImage;
     UIImageView *imageView = [[UIImageView alloc] initWithImage:placeholderImage];
     self.imageView = imageView;
+    imageView.tintColor = self.navigationController.navigationBar.tintColor;
     imageView.autoresizingMask = UIViewAutoresizingNone;
     imageView.contentMode = UIViewContentModeCenter;
+    imageView.layer.cornerRadius = self.imageView.width / 2.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, 44, self.navigationController.navigationBar.height);
     [button addSubview:imageView];
@@ -118,18 +131,18 @@
     
     UIBarButtonItem *resetBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(reset:)];
     resetBarButtonItem.tintColor = HEXCOLOR(0xC24065);
-    [resetBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
+    [resetBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *infoBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(self.selectedPhotosIndexes.count ? [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count] : nil) style:UIBarButtonItemStylePlain target:nil action:nil];
     infoBarButtonItem.tintColor = [UIColor lightGrayColor];
     [infoBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done:)];
-    doneBarButtonItem.tintColor = HEXCOLOR(0x08BB08);
+    doneBarButtonItem.tintColor = self.tintColor;
     [doneBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *fixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedSpacer.width = 43.5 - 40;
+    fixedSpacer.width = 41.5 - 40;
     self.toolbarItems = @[resetBarButtonItem, flexibleSpaceBarButton1, infoBarButtonItem, flexibleSpaceBarButton2, fixedSpacer, doneBarButtonItem];
     
     self.resetBarButtonItem = resetBarButtonItem;
@@ -143,13 +156,13 @@
     UIView *titleView = [[UIView alloc] init];
     UILabel *titleLabel = [[UILabel alloc] init];
     self.titleLabel = titleLabel;
-    self.titleLabel.textColor = [UIColor whiteColor];
+    self.titleLabel.textColor = self.navigationController.navigationBar.tintColor;
     self.titleLabel.font = BoldFont(16);
     [titleView addSubview:self.titleLabel];
     
     UILabel *dateLabel = [[UILabel alloc] init];
     self.dateLabel = dateLabel;
-    self.dateLabel.textColor = [UIColor whiteColor];
+    self.dateLabel.textColor = self.navigationController.navigationBar.tintColor;
     self.dateLabel.font = Font(11);
     [titleView addSubview:self.dateLabel];
     self.navigationItem.titleView = titleView;
@@ -297,10 +310,12 @@
     NSUInteger currentIndex = photoVC.pageIndex;
     if ([self.selectedPhotosIndexes containsObject:@(currentIndex)]) { // Deselect
         [self.selectedPhotosIndexes removeObject:@(currentIndex)];
-        self.imageView.image = [UIImage imageNamed:@"ToSelectionInBar"];
+        self.imageView.image = [self.toSelectionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.imageView.backgroundColor = [UIColor clearColor];
     } else { // Select
         [self.selectedPhotosIndexes addObject:@(currentIndex)];
-        self.imageView.image = [UIImage imageNamed:@"SelectionInBar"];
+        self.imageView.image = self.selectionImage;
+        self.imageView.backgroundColor = self.tintColor;
         self.imageView.transform = CGAffineTransformMakeScale(0.5, 0.5);
         [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             self.imageView.transform = CGAffineTransformMakeScale(1.1, 1.1);
@@ -325,15 +340,18 @@
 }
 
 - (void)reset:(UIBarButtonItem *)sender {
-    NSArray *indexes = [self.selectedPhotosIndexes copy];
-    [self.selectedPhotosIndexes removeAllObjects];
-    self.resetBarButtonItem.enabled = NO;
-    self.infoBarButtonItem.title = nil;
-    self.doneBarButtonItem.enabled = NO;
-    self.imageView.image = [UIImage imageNamed:@"ToSelectionInBar"];
-    if ([self.photoDelegate respondsToSelector:@selector(pageViewController:didSelectPhotosAtIndexes:)]) {
-        [self.photoDelegate pageViewController:self didSelectPhotosAtIndexes:indexes];
-    }
+    [self showAlertWithTitle:@"Reset Selected Photo(s)" message:@"Are you sure to reset all selected photos? If reset, all selected photos will be unselected and this action can't undo." cancelButtonTitle:@"Cancel" cancelActionHandler:NULL destructiveButtonTitle:@"Reset" destructiveActionHandler:^{
+        NSArray *indexes = [self.selectedPhotosIndexes copy];
+        [self.selectedPhotosIndexes removeAllObjects];
+        self.resetBarButtonItem.enabled = NO;
+        self.infoBarButtonItem.title = nil;
+        self.doneBarButtonItem.enabled = NO;
+        self.imageView.image = [self.toSelectionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.imageView.backgroundColor = [UIColor clearColor];
+        if ([self.photoDelegate respondsToSelector:@selector(pageViewController:didSelectPhotosAtIndexes:)]) {
+            [self.photoDelegate pageViewController:self didSelectPhotosAtIndexes:indexes];
+        }
+    }];
 }
 
 - (void)done:(UIBarButtonItem *)sender {

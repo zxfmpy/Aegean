@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "AGNPhotosPickerController.h"
+#import "Marcos.h"
 
 @interface ViewController () <AGNPhotosPickerControllerDelegate>
 
@@ -32,6 +33,7 @@
 - (IBAction)showPhotosPicker:(id)sender {
     AGNPhotosPickerController *photosPicker = [[AGNPhotosPickerController alloc] init];
     photosPicker.pickerDelegate = self;
+    photosPicker.tintColor = HEXCOLOR(0x18b4ed);
     [self presentViewController:photosPicker animated:YES completion:NULL];
 }
 

@@ -25,12 +25,8 @@
         
         self.navigationBar.barTintColor = HEXCOLOR(0x343339);
         self.navigationBar.tintColor = [UIColor whiteColor];
-        self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-        self.navigationBar.barStyle = UIBarStyleBlack;
-        self.navigationBar.translucent = YES;
-        
         self.toolbar.barTintColor = [UIColor whiteColor];
-        self.toolbar.translucent = YES;
+        self.tintColor = HEXCOLOR(0x08bb08);
     }
     return self;
 }
@@ -39,6 +35,52 @@
     [super viewDidLoad];
     self.delegate = self;
     self.interactivePopGestureRecognizer.delegate = self;
+    
+    self.navigationBar.barStyle = [self isDarkColor:self.navigationBar.barTintColor] ? UIBarStyleBlack : UIBarStyleDefault;
+    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: self.navigationBar.tintColor};
+    self.navigationBar.translucent = YES;
+    self.toolbar.translucent = YES;
+}
+
+- (BOOL)isDarkColor:(UIColor *)color {
+    BOOL isDarkColor;
+    CGColorSpaceRef colorSpace = CGColorGetColorSpace([color CGColor]);
+    CGColorSpaceModel colorSpaceModel = CGColorSpaceGetModel(colorSpace);
+    switch (colorSpaceModel) {
+        case kCGColorSpaceModelUnknown: {
+            break;
+        }
+        case kCGColorSpaceModelMonochrome: {
+            CGFloat white = 0;
+            [color getWhite:&white alpha:nil];
+            isDarkColor = (white < 0.5);
+            break;
+        }
+        case kCGColorSpaceModelRGB: {
+            const CGFloat *componentColors = CGColorGetComponents(color.CGColor);
+            CGFloat colorBrightness = ((componentColors[0] * 299) + (componentColors[1] * 587) + (componentColors[2] * 114)) / 1000;
+            isDarkColor = (colorBrightness < 0.5);
+            break;
+        }
+        case kCGColorSpaceModelCMYK: {
+            break;
+        }
+        case kCGColorSpaceModelLab: {
+            break;
+        }
+        case kCGColorSpaceModelDeviceN: {
+            break;
+        }
+        case kCGColorSpaceModelIndexed: {
+            break;
+        }
+        case kCGColorSpaceModelPattern: {
+            break;
+        }
+        default:
+            break;
+    }
+    return isDarkColor;
 }
 
 #pragma mark <UINavigationControllerDelegate>

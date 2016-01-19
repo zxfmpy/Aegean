@@ -16,4 +16,5 @@
 
 @interface AGNPhotosPickerController : UINavigationController
 @property (nonatomic, weak) id<AGNPhotosPickerControllerDelegate> pickerDelegate;
+@property (nonatomic, strong) UIColor *tintColor;
 @end

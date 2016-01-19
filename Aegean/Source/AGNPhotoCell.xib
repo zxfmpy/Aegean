@@ -20,8 +20,17 @@
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Kr-Mn-UBO">
                         <rect key="frame" x="50" y="0.0" width="50" height="50"/>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ToSelection.png" translatesAutoresizingMaskIntoConstraints="NO" id="FMg-3w-33y">
-                        <rect key="frame" x="73" y="0.0" width="27" height="27"/>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ToSelection.png" translatesAutoresizingMaskIntoConstraints="NO" id="FMg-3w-33y">
+                        <rect key="frame" x="75" y="2" width="23" height="23"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="23" id="Szn-ao-7Jq"/>
+                            <constraint firstAttribute="width" constant="23" id="eZQ-Ul-ndt"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <real key="value" value="11.5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -29,12 +38,12 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="6Kr-Mn-UBO" secondAttribute="trailing" id="AKn-fz-bwF"/>
                 <constraint firstItem="6Kr-Mn-UBO" firstAttribute="height" secondItem="w17-Sq-gP3" secondAttribute="height" multiplier="1:2" id="FIw-2u-iYz"/>
-                <constraint firstItem="FMg-3w-33y" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="K6o-C4-3g2"/>
+                <constraint firstItem="FMg-3w-33y" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="K6o-C4-3g2"/>
                 <constraint firstItem="w17-Sq-gP3" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="PaZ-iL-XSs"/>
                 <constraint firstAttribute="trailing" secondItem="w17-Sq-gP3" secondAttribute="trailing" id="Pcf-g6-4Sh"/>
                 <constraint firstItem="6Kr-Mn-UBO" firstAttribute="width" secondItem="w17-Sq-gP3" secondAttribute="width" multiplier="1:2" id="aA9-xg-Aci"/>
                 <constraint firstItem="w17-Sq-gP3" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="mKS-MZ-FkM"/>
-                <constraint firstAttribute="trailing" secondItem="FMg-3w-33y" secondAttribute="trailing" id="tL9-z5-nnm"/>
+                <constraint firstAttribute="trailing" secondItem="FMg-3w-33y" secondAttribute="trailing" constant="2" id="tL9-z5-nnm"/>
                 <constraint firstAttribute="bottom" secondItem="w17-Sq-gP3" secondAttribute="bottom" id="u0C-TN-2m3"/>
                 <constraint firstItem="6Kr-Mn-UBO" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="y7a-mG-Ak4"/>
             </constraints>
@@ -46,6 +55,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="ToSelection.png" width="27" height="27"/>
+        <image name="ToSelection.png" width="23" height="23"/>
     </resources>
 </document>

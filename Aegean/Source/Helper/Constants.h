@@ -11,4 +11,5 @@
 
 static const CGFloat kBarButtomItemFontSize = 16;
 static const CGFloat kPhotoTransitioningDuration = 0.25;
+
 #endif /* Constants_h */
