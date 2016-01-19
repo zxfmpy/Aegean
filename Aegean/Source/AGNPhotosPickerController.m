@@ -23,9 +23,6 @@
         AGNAlbumsViewController *albumsVC = [[AGNAlbumsViewController alloc] init];
         self.viewControllers = @[albumsVC];
         
-        self.delegate = self;
-        self.interactivePopGestureRecognizer.delegate = self;
-        
         self.navigationBar.barTintColor = HEXCOLOR(0x343339);
         self.navigationBar.tintColor = [UIColor whiteColor];
         self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
@@ -40,6 +37,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.delegate = self;
+    self.interactivePopGestureRecognizer.delegate = self;
 }
 
 #pragma mark <UINavigationControllerDelegate>
