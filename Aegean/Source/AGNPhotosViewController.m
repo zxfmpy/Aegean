@@ -15,6 +15,7 @@
 #import "Marcos.h"
 #import "Constants.h"
 #import "UIView+SLAdditions.h"
+#import "UIViewController+SLAlert.h"
 
 #define COLOR_PART_RED(color)    (((color) >> 16) & 0xff)
 #define COLOR_PART_GREEN(color)  (((color) >>  8) & 0xff)
@@ -249,6 +250,10 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
         cell.selectionImageView.image = self.toSelectionImage;
         cell.selectionImageView.backgroundColor = [UIColor clearColor];
     } else {
+        if (self.selectedPhotosIndexes.count == [(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]) {
+            [self showAlertWithTitle:@"Maximum Photos" message:[NSString stringWithFormat:@"You are allowed to select %ld photos. If necessary, please deselect another one, and then select it.", (long)[(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]] cancelButtonTitle:@"I Know It!"];
+            return;
+        }
         [self.selectedPhotosIndexes addObject:@(index)];
         cell.selectionImageView.image = self.selectionImage;
         cell.selectionImageView.backgroundColor = self.tintColor;

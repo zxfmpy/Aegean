@@ -313,6 +313,10 @@
         self.imageView.image = [self.toSelectionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.imageView.backgroundColor = [UIColor clearColor];
     } else { // Select
+        if (self.selectedPhotosIndexes.count == [(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]) {
+            [self showAlertWithTitle:@"Maximum Photos" message:[NSString stringWithFormat:@"You are allowed to select %ld photos. If necessary, please deselect another one, and then select it.", (long)[(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]] cancelButtonTitle:@"I Know It!"];
+            return;
+        }
         [self.selectedPhotosIndexes addObject:@(currentIndex)];
         self.imageView.image = self.selectionImage;
         self.imageView.backgroundColor = self.tintColor;

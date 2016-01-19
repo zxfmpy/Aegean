@@ -34,6 +34,7 @@
     AGNPhotosPickerController *photosPicker = [[AGNPhotosPickerController alloc] init];
     photosPicker.pickerDelegate = self;
     photosPicker.tintColor = HEXCOLOR(0x18b4ed);
+    photosPicker.maximumNumberOfPhotos = 9;
     [self presentViewController:photosPicker animated:YES completion:NULL];
 }
 
