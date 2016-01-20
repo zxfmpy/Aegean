@@ -11,5 +11,8 @@
 
 static const CGFloat kBarButtomItemFontSize = 16;
 static const CGFloat kPhotoTransitioningDuration = 0.25;
+static NSString *const kMaximumPhotosAlertTitle = @"Maximum Photos";
+static NSString *const kMaximumPhotosAlertMessage = @"You are allowed to select %ld photos. If necessary, please deselect one first.";
+static NSString *const kMaximumPhotosAlertCancelButtonTitle = @"Sure";
 
 #endif /* Constants_h */

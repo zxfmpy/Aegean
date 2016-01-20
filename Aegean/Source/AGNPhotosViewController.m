@@ -251,7 +251,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
         cell.selectionImageView.backgroundColor = [UIColor clearColor];
     } else {
         if (self.selectedPhotosIndexes.count == [(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]) {
-            [self showAlertWithTitle:@"Maximum Photos" message:[NSString stringWithFormat:@"You are allowed to select %ld photos. If necessary, please deselect another one, and then select it.", (long)[(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]] cancelButtonTitle:@"I Know It!"];
+            [self showAlertWithTitle:kMaximumPhotosAlertTitle message:[NSString stringWithFormat:kMaximumPhotosAlertMessage, (long)[(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]] cancelButtonTitle:kMaximumPhotosAlertCancelButtonTitle];
             return;
         }
         [self.selectedPhotosIndexes addObject:@(index)];
