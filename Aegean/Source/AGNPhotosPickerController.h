@@ -16,6 +16,6 @@
 
 @interface AGNPhotosPickerController : UINavigationController
 @property (nonatomic, weak) id<AGNPhotosPickerControllerDelegate> pickerDelegate;
-@property (nonatomic, strong) UIColor *tintColor;
-@property (nonatomic, assign) NSUInteger maximumNumberOfPhotos;
+@property (nonatomic, strong) UIColor *tintColor; // Color for selection appearance and done item
+@property (nonatomic, assign) NSUInteger maximumNumberOfSelectedPhotos;
 @end

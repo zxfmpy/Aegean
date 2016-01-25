@@ -314,8 +314,8 @@
         self.imageView.image = [self.toSelectionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.imageView.backgroundColor = [UIColor clearColor];
     } else { // Select
-        if (self.selectedPhotosIndexes.count == [(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]) {
-            [self showAlertWithTitle:kMaximumPhotosAlertTitle message:[NSString stringWithFormat:kMaximumPhotosAlertMessage, (long)[(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]] cancelButtonTitle:kMaximumPhotosAlertCancelButtonTitle];
+        if (self.selectedPhotosIndexes.count == [(AGNPhotosPickerController *)self.navigationController maximumNumberOfSelectedPhotos]) {
+            [self showAlertWithTitle:kMaximumPhotosAlertTitle message:[NSString stringWithFormat:kMaximumPhotosAlertMessage, (long)[(AGNPhotosPickerController *)self.navigationController maximumNumberOfSelectedPhotos]] cancelButtonTitle:kMaximumPhotosAlertCancelButtonTitle];
             return;
         }
         [self.selectedPhotosIndexes addObject:@(currentIndex)];

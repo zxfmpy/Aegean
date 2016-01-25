@@ -253,8 +253,8 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
         cell.selectionImageView.image = self.toSelectionImage;
         cell.selectionImageView.backgroundColor = [UIColor clearColor];
     } else {
-        if (self.selectedPhotosIndexes.count == [(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]) {
-            [self showAlertWithTitle:kMaximumPhotosAlertTitle message:[NSString stringWithFormat:kMaximumPhotosAlertMessage, (long)[(AGNPhotosPickerController *)self.navigationController maximumNumberOfPhotos]] cancelButtonTitle:kMaximumPhotosAlertCancelButtonTitle];
+        if (self.selectedPhotosIndexes.count == [(AGNPhotosPickerController *)self.navigationController maximumNumberOfSelectedPhotos]) {
+            [self showAlertWithTitle:kMaximumPhotosAlertTitle message:[NSString stringWithFormat:kMaximumPhotosAlertMessage, (long)[(AGNPhotosPickerController *)self.navigationController maximumNumberOfSelectedPhotos]] cancelButtonTitle:kMaximumPhotosAlertCancelButtonTitle];
             return;
         }
         [self.selectedPhotosIndexes addObject:@(index)];

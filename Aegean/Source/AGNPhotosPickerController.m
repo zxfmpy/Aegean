@@ -27,7 +27,7 @@
         self.navigationBar.tintColor = [UIColor whiteColor];
         self.toolbar.barTintColor = [UIColor whiteColor];
         self.tintColor = HEXCOLOR(0x08bb08);
-        self.maximumNumberOfPhotos = NSUIntegerMax;
+        self.maximumNumberOfSelectedPhotos = NSUIntegerMax;
     }
     return self;
 }
