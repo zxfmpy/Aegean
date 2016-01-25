@@ -77,14 +77,12 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    if (!self.isMovingFromParentViewController) {
-        self.navigationController.toolbarHidden = YES;
-    }
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     [super viewWillDisappear:animated];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.navigationController setNavigationBarHidden:self.isFullScreen];
     [self.navigationController setToolbarHidden:self.isFullScreen];
 }
@@ -134,7 +132,8 @@
     [resetBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *infoBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(self.selectedPhotosIndexes.count ? [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count] : nil) style:UIBarButtonItemStylePlain target:nil action:nil];
-    infoBarButtonItem.tintColor = [UIColor lightGrayColor];
+    infoBarButtonItem.tintColor = [UIColor darkGrayColor];
+    infoBarButtonItem.enabled = NO;
     [infoBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done:)];
@@ -283,6 +282,8 @@
     [self.view insertSubview:maskView atIndex:0];
     
     CGRect barFrame = self.navigationController.navigationBar.frame;
+    barFrame.origin.y = 20;
+    self.navigationController.navigationBar.frame = barFrame;
     [UIView animateWithDuration:0.33 delay:0 options:(self.isFullScreen ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut) animations:^{
         [self setNeedsStatusBarAppearanceUpdate];
         self.navigationController.navigationBar.alpha = alpha;
@@ -360,14 +361,13 @@
 
 - (void)done:(UIBarButtonItem *)sender {
     AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
-    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerController:didFinishPickingPhotos:)]) {
-        NSMutableArray *photos = [NSMutableArray array];
+    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerController:didFinishPickingPhotoAssets:)]) {
+        NSMutableArray *photoAssets = [NSMutableArray array];
         for (NSNumber *indexNumber in self.selectedPhotosIndexes) {
             NSUInteger index = [indexNumber unsignedIntegerValue];
-            UIImage *image = [self.album fullResolutionImageAtIndex:index];
-            [photos addObject:image];
+            [photoAssets addObject:[self.album.assets objectAtIndex:index]];
         }
-        [picker.pickerDelegate photosPickerController:picker didFinishPickingPhotos:[photos copy]];
+        [picker.pickerDelegate photosPickerController:picker didFinishPickingPhotoAssets:[photoAssets copy]];
     } else {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     }

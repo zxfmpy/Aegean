@@ -11,7 +11,7 @@
 @class AGNPhotosPickerController;
 @protocol AGNPhotosPickerControllerDelegate <NSObject>
 - (void)photosPickerControllerDidCancel:(AGNPhotosPickerController *)picker;
-- (void)photosPickerController:(AGNPhotosPickerController *)picker didFinishPickingPhotos:(NSArray *)photos;
+- (void)photosPickerController:(AGNPhotosPickerController *)picker didFinishPickingPhotoAssets:(NSArray *)photoAssets;
 @end
 
 @interface AGNPhotosPickerController : UINavigationController

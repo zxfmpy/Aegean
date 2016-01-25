@@ -43,8 +43,8 @@
     return;
 }
 
-- (void)photosPickerController:(AGNPhotosPickerController *)picker didFinishPickingPhotos:(NSArray *)photos {
-    NSLog(@"%@", photos);
+- (void)photosPickerController:(AGNPhotosPickerController *)picker didFinishPickingPhotoAssets:(NSArray *)photoAssets {
+    NSLog(@"%@", photoAssets);
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 @end

@@ -121,6 +121,11 @@ static NSString *const kAlbumCellReuseIdentifier = @"AlbumCell";
     [self.assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:enumerationBlock failureBlock:failureBlock];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.toolbarHidden = YES;
+}
+
 #pragma mark <UITableViewDataSource>
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

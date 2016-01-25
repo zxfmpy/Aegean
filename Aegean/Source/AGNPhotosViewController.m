@@ -22,7 +22,7 @@
 #define COLOR_PART_BLUE(color)   ( (color)        & 0xff)
 
 @interface AGNPhotosViewController () <UINavigationControllerDelegate, AGNPageViewControllerDelegate, AGNPhotoTransitioning>
-@property (nonatomic, weak) UIBarButtonItem *previewBarButtonItem;
+@property (nonatomic, weak) UIBarButtonItem *resetBarButtonItem;
 @property (nonatomic, weak) UIBarButtonItem *infoBarButtonItem;
 @property (nonatomic, weak) UIBarButtonItem *doneBarButtonItem;
 
@@ -68,13 +68,7 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     [super viewWillAppear:animated];
     self.navigationController.toolbarHidden = NO;
     [self p_refreshToolbarButtonItems];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    if (self.isMovingFromParentViewController) { // Carefully
-        self.navigationController.toolbarHidden = YES;
-    }
-    [super viewWillDisappear:animated];
+    self.view.frame = [UIScreen mainScreen].bounds;
 }
 
 - (void)setAlbum:(AGNAlbum *)album {
@@ -87,12 +81,13 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     UIBarButtonItem *flexibleSpaceBarButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *flexibleSpaceBarButton2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    UIBarButtonItem *previewBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Preview" style:UIBarButtonItemStylePlain target:self action:@selector(preview:)];
-    previewBarButtonItem.tintColor = [UIColor blackColor];
-    [previewBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
+    UIBarButtonItem *resetBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(reset:)];
+    resetBarButtonItem.tintColor = HEXCOLOR(0xC24065);
+    [resetBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *infoBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:nil action:nil];
-    infoBarButtonItem.tintColor = [UIColor lightGrayColor];
+    infoBarButtonItem.tintColor = [UIColor darkGrayColor];
+    infoBarButtonItem.enabled = NO;
     [infoBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done:)];
@@ -100,23 +95,23 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
     [doneBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:kBarButtomItemFontSize]} forState:UIControlStateNormal];
     
     UIBarButtonItem *fixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedSpacer.width = 57 - 40; // hard-coded
-    self.toolbarItems = @[previewBarButtonItem, flexibleSpaceBarButton1, infoBarButtonItem,flexibleSpaceBarButton2, fixedSpacer, doneBarButtonItem];
+    fixedSpacer.width = 41.5 - 40; // hard-coded
+    self.toolbarItems = @[resetBarButtonItem, flexibleSpaceBarButton1, infoBarButtonItem,flexibleSpaceBarButton2, fixedSpacer, doneBarButtonItem];
     
-    self.previewBarButtonItem = previewBarButtonItem;
+    self.resetBarButtonItem = resetBarButtonItem;
     self.infoBarButtonItem = infoBarButtonItem;
     self.doneBarButtonItem = doneBarButtonItem;
-    self.previewBarButtonItem.enabled = NO;
+    self.resetBarButtonItem.enabled = NO;
     self.doneBarButtonItem.enabled = NO;
 }
 
 - (void)p_refreshToolbarButtonItems {
     if (self.selectedPhotosIndexes.count) {
-        self.previewBarButtonItem.enabled = YES;
+        self.resetBarButtonItem.enabled = YES;
         self.doneBarButtonItem.enabled = YES;
         self.infoBarButtonItem.title = [NSString stringWithFormat:@"%ld Selected", (long)self.selectedPhotosIndexes.count];
     } else {
-        self.previewBarButtonItem.enabled = NO;
+        self.resetBarButtonItem.enabled = NO;
         self.doneBarButtonItem.enabled = NO;
         self.infoBarButtonItem.title = nil;
     }
@@ -223,20 +218,28 @@ static NSString * const kPhotoCellReuseIdentifier = @"PhotoCell";
 }
 
 #pragma mark - Action
-- (void)preview:(UIBarButtonItem *)sender {
-#warning
+- (void)reset:(UIBarButtonItem *)sender {
+    [self showAlertWithTitle:@"Reset Selected Photo(s)" message:@"Are you sure to reset all selected photos? If reset, all selected photos will be unselected and this action can't undo." cancelButtonTitle:@"Cancel" cancelActionHandler:NULL destructiveButtonTitle:@"Reset" destructiveActionHandler:^{
+        NSArray *indexes = [self.selectedPhotosIndexes copy];
+        [self.selectedPhotosIndexes removeAllObjects];
+        self.resetBarButtonItem.enabled = NO;
+        self.infoBarButtonItem.title = nil;
+        self.doneBarButtonItem.enabled = NO;
+        for (NSNumber *indexNum in indexes) {
+            [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:[indexNum unsignedIntegerValue] inSection:0]]];
+        }
+    }];
 }
 
 - (void)done:(UIBarButtonItem *)sender {
     AGNPhotosPickerController *picker = (AGNPhotosPickerController *)self.navigationController;
-    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerController:didFinishPickingPhotos:)]) {
-        NSMutableArray *photos = [NSMutableArray array];
+    if ([picker.pickerDelegate respondsToSelector:@selector(photosPickerController:didFinishPickingPhotoAssets:)]) {
+        NSMutableArray *photoAssets = [NSMutableArray array];
         for (NSNumber *indexNumber in self.selectedPhotosIndexes) {
             NSUInteger index = [indexNumber unsignedIntegerValue];
-            UIImage *image = [self.album fullResolutionImageAtIndex:index];
-            [photos addObject:image];
+            [photoAssets addObject:[self.album.assets objectAtIndex:index]];
         }
-        [picker.pickerDelegate photosPickerController:picker didFinishPickingPhotos:[photos copy]];
+        [picker.pickerDelegate photosPickerController:picker didFinishPickingPhotoAssets:[photoAssets copy]];
     } else {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
     }
